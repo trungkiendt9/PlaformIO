@@ -27,14 +27,19 @@ https://github.com/espressif/esp8266_at/wiki
 const char SSID[] = "netis";
 const char SSID_KEY[] = "password";
 const char BSSID[] = "04:8d:38:24:ba:3f";
+const char IP_SERVER[] = "184.106.153.149"; // IP của thingspeak.com
 const char URL_current_temp[] = "/update?key=QZLN6Q1ZPQOOG93R&field1="; // https://thingspeak.com/channels/51851
 // KHAI BÁO CÁC BIẾN TOÀN CỤC
 float NhietDo = 0.00;
+float DoAm = 0.00;
 char cmd_buff[100];
+int8_t cmd_length = 0;
 // KHAI BÁO CÁC HÀM SỬ DỤNG
 int8_t sendATcommand(char* ATcommand, char* expected_answer, unsigned int timeout);
 int8_t sendATcommand2(char* ATcommand, char* expected_answer1, char* expected_answer2, unsigned int timeout);
 boolean connect_WIFI();
+boolean connect_Server();
+void get_data(float number);
 // CÁC HÀM KHỞI TẠO
 void setup() {
   // khởi tạo thành chuỗi cmd_buff
@@ -48,30 +53,36 @@ void setup() {
   sendATcommand("AT", "OK", 5000);
   // reset
   sendATcommand("AT+RST", "ready", 5000);
-  // cấu hình chế độ station và AP, trạm thu phát
+  // cấu hình chế độ Router or Terminal
   sendATcommand("AT+CWMODE=3", "OK", 5000);
-  // list wifi hiện có
-  sendATcommand("AT+CWLAP", "OK", 5000); // bị tràn nếu response[100]
-  sendATcommand("AT+CWLAP", "OK", 5000);
-  sendATcommand("AT+CWLAP", "OK", 5000);
-  // kết nối wifi
+  // list wifi hiện có thử tối đa 10 lần
+  for (int8_t i = 0; i < 10; i++) {
+    if (sendATcommand("AT+CWLAP", "OK", 5000)==1) { // bị tràn nếu response[100]
+      break;
+    }
+  }
+  // kết nối wifi thử tối đa 10 lần
   for (int8_t i = 0; i < 10; i++) {
     if (connect_WIFI()==1) {
       break;
     }
   }
-  // Bật chế độ đa kết nối
-  sendATcommand("AT+CIPMUX=1", "OK", 5000);
   // Hiển thị ip
   sendATcommand("AT+CIFSR", "OK", 5000);
   // Hiển thị SSID wifi nếu kết nối thành công
   sendATcommand("AT+CWJAP?", "OK", 5000);
-
+  // Chạy thử kết nối server
+  connect_Server();
+  // chạy thử gửi data lên server
+  get_data(20.21);
 }
 
 // VÒNG LẶP VÔ HẠN
 void loop() {
-  /* code */
+  if (connect_Server()) {
+    get_data(random(15.00, 20.00));
+    delay(30000);
+  }
 }
 
 // TRIỂN KHAI CÁC HÀM SỬ DỤNG
@@ -156,9 +167,47 @@ boolean connect_WIFI(){
   memset(cmd_buff, '\0', 100);
   snprintf(cmd_buff, sizeof(cmd_buff), "AT+CWJAP=\"%s\",\"%s\",\"%s\"",SSID, SSID_KEY, BSSID);
   if (sendATcommand(cmd_buff, "OK", 10000)==1) {
+    Serial.println("OK Connected WIFI");
     return 1;
   }
   else {
     return 0;
-  };
+  }
+}
+// 4. Hàm kết nối với server dữ liệu thingspeak.com
+boolean connect_Server(){
+  memset(cmd_buff, '\0', 100);   //Đặt lại giá trị của aux_str
+  // Bật chế độ đa kết nối
+  sendATcommand("AT+CIPMUX=1", "OK", 5000);
+  snprintf(cmd_buff, sizeof(cmd_buff), "AT+CIPSTART=4,\"TCP\",\"%s\",80", IP_SERVER);    //Kết nối server thingspeak
+  if (sendATcommand2(cmd_buff, "OK",  "ERROR", 5000) == 1){
+    Serial.println("OK Connected Thingspeak");
+    return 1;
+  }
+  else {
+    Serial.println("FAILED Connecting to Thingspeak");
+    return 0;
+  }
+}
+// 5. Hàm gửi data lên server dữ liệu thingspeak.com
+// Acting as a TCP Client
+void get_data(float number) {
+  memset(cmd_buff, '\0', 100);
+  snprintf(cmd_buff, sizeof(cmd_buff), "GET %s%.2f", URL_current_temp, number);  //Gộp dữ liệu
+  cmd_length = strlen(cmd_buff) + 2;                      // Tính chiều dài dữ liệu, +2 cho \r\n
+  snprintf(cmd_buff, sizeof(cmd_buff), "AT+CIPSEND=4,%d", cmd_length);   //Gửi kết nối và chờ >
+  if (sendATcommand2(cmd_buff, ">", "ERROR", 5000) == 1){
+    snprintf(cmd_buff, sizeof(cmd_buff), "GET %s%.2f", URL_current_temp, number);
+    sendATcommand2(cmd_buff, "SEND OK", "ERROR", 5000);
+  }
+  else {
+    Serial.println("Get failed"); //nếu không gửi được báo failed
+  }
+  //Đóng kết nối trước khi bắt đầu một kết nối khác
+  for (int8_t i = 0; i < 10; i++) {
+    if (sendATcommand("AT+CIPCLOSE=1", "OK", 5000)==1) {
+      Serial.println("CloseIP done");
+      break;
+    }
+  }
 }
