@@ -34,6 +34,8 @@ float NhietDo = 0.00;
 float DoAm = 0.00;
 char cmd_buff[100];
 int8_t cmd_length = 0;
+unsigned long interval=10000; // the time we need to wait
+unsigned long previousMillis=0; // millis() returns an unsigned long.
 // KHAI BÁO CÁC HÀM SỬ DỤNG
 int8_t sendATcommand(char* ATcommand, char* expected_answer, unsigned int timeout);
 int8_t sendATcommand2(char* ATcommand, char* expected_answer1, char* expected_answer2, unsigned int timeout);
@@ -79,9 +81,12 @@ void setup() {
 
 // VÒNG LẶP VÔ HẠN
 void loop() {
-        if (connect_Server()) {
-                get_data(random(15.00, 20.00));
-                delay(30000);
+        unsigned long currentMillis = millis(); // grab current time
+        if ((unsigned long)(currentMillis - previousMillis) >= interval) {
+                if (connect_Server()) {
+                        get_data(random(15.00, 20.00));
+                }
+                previousMillis = millis();
         }
 }
 
@@ -121,7 +126,7 @@ int8_t sendATcommand(char* ATcommand, char* expected_answer, unsigned int timeou
         Serial.println(response); // In giá trị nhận được để debug
         return answer;
 }
-// 2. Hàm gửi lệnh AT 2 để gửi dữ liệu
+// 2. Hàm gửi lệnh AT 2 expect answer để gửi dữ liệu
 int8_t sendATcommand2(char* ATcommand, char* expected_answer1, char* expected_answer2, unsigned int timeout) {
 
         uint8_t x = 0,  answer = 0;
