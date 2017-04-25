@@ -1,0 +1,321 @@
+AT+CIPSTATUS
+
+
++CIPSTATUS:0,IP INITIAL  
+1,IP INITIAL  
+2,IP INITIAL  
+3,IP INITIAL  
+4,IP INITIAL  
+5,IP INITIAL  
+6,IP INITIAL  
+7,IP INITIAL  
+
+
+OK
+AT+CSTT="v-internet","",""
+
+OK
+AT+CIPSTATUS
+
+
++CIPSTATUS:0,IP START  
+1,IP INITIAL  
+2,IP INITIAL  
+3,IP INITIAL  
+4,IP INITIAL  
+5,IP INITIAL  
+6,IP INITIAL  
+7,IP INITIAL  
+
+
+OK
+AT+CIICR
+
+OK
+AT+CIPSTATUS
+
+
++CIPSTATUS:0,IP GPRSACT  
+1,IP INITIAL  
+2,IP INITIAL  
+3,IP INITIAL  
+4,IP INITIAL  
+5,IP INITIAL  
+6,IP INITIAL  
+7,IP INITIAL  
+
+
+OK
+AT+CIFSR
+
+10.139.207.138
+
+OK
+AT+CIPSTATUS
+
+
++CIPSTATUS:0,IP GPRSACT  
+1,IP INITIAL  
+2,IP INITIAL  
+3,IP INITIAL  
+4,IP INITIAL  
+5,IP INITIAL  
+6,IP INITIAL  
+7,IP INITIAL  
+
+
+OK
+AT+CIPSTART=4,"TCP","184.106.153.149",80
+
++CME ERROR:53
+AT+CIPSTART=1,"TCP","184.106.153.149",80
+
++CME ERROR:53
+AT+CIPSTATUS
+
+
++CIPSTATUS:0,IP GPRSACT  
+1,IP INITIAL  
+2,IP INITIAL  
+3,IP INITIAL  
+4,IP INITIAL  
+5,IP INITIAL  
+6,IP INITIAL  
+7,IP INITIAL  
+
+
+OK
+AT+CIFSR
+
+10.139.207.138
+
+OK
+AT+CIPSTART=1,"TCP","184.106.153.149",80
+
++CME ERROR:53
+AT+CIPSTART=4,"TCP","184.106.153.149",80
+
++CME ERROR:53
+
+OK
+AT+CSTT="v-internet"," "," "
+
+OK
+AT+CIPSTATUS
+
+
++CIPSTATUS:0,IP START  
+1,IP INITIAL  
+2,IP INITIAL  
+3,IP INITIAL  
+4,IP INITIAL  
+5,IP INITIAL  
+6,IP INITIAL  
+7,IP INITIAL  
+
+
+OK
+AT+CIFSR
+
++CME ERROR:50
+AT+CIFSR
+
++CME ERROR:50
+AT+CSTT="v-internet","",""
+
+OK
+AT+CIPSTATUS
+
+
++CIPSTATUS:0,IP START  
+1,IP INITIAL  
+2,IP INITIAL  
+3,IP INITIAL  
+4,IP INITIAL  
+5,IP INITIAL  
+6,IP INITIAL  
+7,IP INITIAL  
+
+
+OK
+AT+CIFSR
+
++CME ERROR:50
+AT+CIPSTART=4,"TCP","184.106.153.149",80
+
++CME ERROR:53
+AT+CIPSTART=1,"TCP","184.106.153.149",80
+
++CME ERROR:53
+at+cgdcont=1,"IP","cmnet" 
+
+OK
+at+cgact=1,1
+
+OK
+at+cipstatus?
+
+
++CIPSTATUS:0,IP GPRSACT  
+1,IP INITIAL  
+2,IP INITIAL  
+3,IP INITIAL  
+4,IP INITIAL  
+5,IP INITIAL  
+6,IP INITIAL  
+7,IP INITIAL  
+
+
+OK
+AT+CIPSTART=1,"TCP","184.106.153.149",80
+
++CME ERROR:53
+AT+CIPSTART="TCP","184.106.153.149",80
+
++CME ERROR:50
+AT+CIPSTART=1,"TCP","184.106.153.149",80
+
++CME ERROR:53
+at+cipmux=1 
+
+OK
+at+cipstart="TCP","121.41.97.28",60000
+
++CME ERROR:50
+AT+CIPSTART=1,"TCP","184.106.153.149",80
+
++CME ERROR:53
+AT+CIPSTART=1,"TCP","184.106.153.149",80
+
++CME ERROR:53
+AT+CIPSTART=1,"TCP","184.106.153.149",80
+
++CME ERROR:53
+AT+CIPSTART=1,"TCP","184.106.153.149",80
+
++CME ERROR:53
+AT+CIPSTART=1,"TCP","184.106.153.149",80
+
++CME ERROR:53
+AT+CIPSTART=1,"TCP","184.106.153.149",80
+
++CME ERROR:53
+AT+CIPSTART=1,"TCP","184.106.153.149",80
+
++CME ERROR:53
+at+ccid
+
++SCID: SIM Card ID: 89840480088108135143
+
+OK
+at+creg?
+
++CREG: 1,1
+
+OK
+AT+CGatt=1
+
+OK
+at+cipstatus?
+
+
++CIPSTATUS:0,IP GPRSACT  
+1,IP INITIAL  
+2,IP INITIAL  
+3,IP INITIAL  
+4,IP INITIAL  
+5,IP INITIAL  
+6,IP INITIAL  
+7,IP INITIAL  
+
+
+OK
+AT+CIPSTART="TCP","184.106.153.149",80
+
++CME ERROR:50
+
+OK
+AT+CIICR
+
++CME ERROR:50
+AT+CSQ
+
++CSQ: 19,99
+
+OK
+AT+CGatt=1
+
+OK
+at+cgdcont=1,"IP","cmnet"
+
+OK
+at+cgact=1,1
+
+OK
+at+cipstatus?
+
+
++CIPSTATUS:0,IP GPRSACT  
+1,IP INITIAL  
+2,IP INITIAL  
+3,IP INITIAL  
+4,IP INITIAL  
+5,IP INITIAL  
+6,IP INITIAL  
+7,IP INITIAL  
+
+
+OK
+AT+CIPSTART="TCP","184.106.153.149",80
+
++CIPNUM:0
+
+CONNECT OK
+
+OK
+
++TCPCLOSED:0
+
+OK
+AT+CIPSEND=60
+
++CME ERROR:53
+AT+CIPSTART="TCP","184.106.153.149",80
+
++CIPNUM:0
+
+CONNECT OK
+
+OK
+AT+CIPSEND=60
+
++CME ERROR:53
+AT+CIPSEND=0,60
+
+> 
+GET /update?key=QZLN6Q1ZPQOOG93R&field1=20.00&field2=50.40
+
+OK
+
++CIPRCV:0,323,HTTP/1.1 400 Bad Request
+Server: nginx/1.7.5
+Date: Wed, 05 Apr 2017 10:10:44 GMT
+Content-Type: text/html
+Content-Length: 172
+Connection: close
+
+<html>
+<head><title>400 Bad Request</title></head>
+<body bgcolor="white">
+<center><h1>400 Bad Request</h1></center>
+<hr><center>nginx/1.7.5</center>
+</body>
+</html>
+
+
+
++TCPCLOSED:0
+
+OK
+
+OK

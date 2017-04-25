@@ -1,0 +1,40 @@
+http://playground.arduino.cc/Main/MQGasSensors#heater
+https://github.com/solvek/CO2Sensor
+https://www.vox.com/2014/8/6/5971187/carbon-dioxide-indoors-air-pollution
+http://newscenter.lbl.gov/2012/10/17/elevated-indoor-carbon-dioxide-impairs-decision-making-performance/
+
+
+
+
+https://www.elecrow.com/wiki/index.php?title=SIM808_GPRS/GSM%2BGPS_Shield_v1.1
+https://www.itead.cc/wiki/SIM808_GSM/GPRS/GPS_Module
+https://vi.aliexpress.com/item/DHL-EMS-free-shipping-GSM-GPS-Shield-development-board-SIM808-UNO-SIM808-demo-board/32272054045.html?scm=1007.13339.60109.0&pvid=39bfe8ed-3d13-45b0-928c-413289435714&tpp=1
+
+1. SIM808 with Arduino: 
+http://www.dfrobot.com/wiki/index.php?title=SIM808_with_Leonardo_mainboard_SKU:DFR0355
+http://www.elecrow.com/wiki/index.php?title=Elecrow_SIMduino_UNO%2BSIM808_GPRS/GSM_Board
+2. SIM808 Arduino Library:  
+https://github.com/leffhub/DFRobotSIM808_Leonardo_mainboard/raw/master/Library/SIM808.zip
+3. similar SIM808 Board: 
+http://www.seeedstudio.com/wiki/Mini_GSM/GPRS_%2B_GPS_Breakout_-_SIM808
+4. http://www.samlogic.net/articles/smtp-commands-reference.htm
+
+
+AT+CGATT=1
+AT+CSTT="v-internet","",""
+AT+CIICR
+AT+CIFSR
+AT+CIPCLOSE
+AT+CIPSHUT
+AT+CIPSTART="TCP","smtp.gmail.com",465
+AT+CIPSEND
+EHLO www.example.com
+AT+CIPSEND
+auth login
+dHJ1bmdraWVuZHQ5     //ID trungkiendt9
+AT+CIPSEND
+OThoNDIyNTY=     //Pass
+
+MAIL FROM: trungkiendt9@gmail.com
+
+

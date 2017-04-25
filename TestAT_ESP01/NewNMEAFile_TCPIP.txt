@@ -1,0 +1,190 @@
+AT+CIPSTART="TCP","184.106.153.149",80
+
++CIPNUM:0
+
+CONNECT OK
+
+OK
+
+AT+CIPSEND=1,60
+
++CME ERROR:53
+AT+CIPSEND=0,61
+
+> 
+GET /update?key=QZLN6Q1ZPQOOG93R&field1=20.00&field2=50.40
+
+OK
+
++CIPRCV:0,323,HTTP/1.1 400 Bad Reques.W.'rrrj
+Date: Thu, 06 Apr 2017 17:34:13 GMT
+Content-Type: text/html
+Content-Length: 172
+,WK5
+
+<html>
+<head><title>400 Bad RequWzBj
+<body bgcolor="white">
+<center><UzBzj
+<hr><center>nginx/1.YW.j
+</body>
+</html>
+
+
+(jUj
+
+OK
+
+AT+CIPSEND=?
+
++CME ERROR:53
+AT+CIPSTART="TCP","184.106.153.149",80
+
++CIPNUM:0
+
+CONNECT OK
+
+OK
+
+AT+CIPSEND=?
+
++CME ERROR:53
+AT+CIPSEND?
+
++CME ERROR:53
+
++TCPCLOSED:0
+
+OK
+
+AT+CIPSTART="TCP","184.106.153.149",80
+
++CIPNUM:0
+
+CONNECT OK
+
+OK
+
+AT+CIPSEND=60
+
++CME ERROR:53
+AT+CIPSEND=59,GET /update?key=QZLN6Q1ZPQOOG93R&field1=20.00&field2=50.40
+
++CME ERROR:53
+
++TCPCLOSED:0
+
+OK
+
+AT+CIPSEND=59,GET /update?key=QZLN6Q1ZPQOOG93R&field1=20.00&field2=50.40
+
++CME ERROR:53
+AT+CIPSTART="TCP","184.106.153.149",80
+
++CIPNUM:0
+
+CONNECT OK
+
+OK
+
+AT+CIPSEND=59,GET /update?key=QZLN6Q1ZPQOOG93R&field1=20.00&field2=50.40
+
++CME ERROR:53
+
++TCPCLOSED:0
+
+OK
+
+AT+CIPSTART=4,"TCP","184.106.153.149",80
+
++CME ERROR:53
+AT+CIPSTART=0,"TCP","184.106.153.149",80
+
++CME ERROR:53
+AT+CIPSTART="TCP","184.106.153.149",80
+
++CIPNUM:0
+
+CONNECT OK
+
+OK
+
+AT+CIPSEND
+
++CME ERROR:53
+AT+CIPSEND=0
+
+> 
+GET /update?key=QZLN6Q1ZPQOOG93R&field1=20.00&field2=50.40
+
+OK
+
+
++TCPCLOSED:0
+
+OK
+
+at+cipmux=1
+
+OK
+at+cipstatus?
+
+
++CIPSTATUS:0,IP CLOSE  
+1,IP INITIAL  
+2,IP INITIAL  
+3,IP INITIAL  
+4,IP INITIAL  
+5,IP INITIAL  
+6,IP INITIAL  
+7,IP INITIAL  
+
+
+OK
+AT+CIPSTART="TCP","184.106.153.149",80
+A9U5j
+
+CONNECT OK
+
+OK
+
+at+cipstatus?
+
+
++CIPSTATUS:0,CONNECT OK  
+1,IP INITIAL  
+2,IP INITIAL  
+3,IP INITIAL  
+4,IP INITIAL  
+5,IP INITIAL  
+6,IP INITIAL  
+7,IP INITIAL  
+
+
+OK
+AT+CIPSEND=0,60
+
+> 
+GET /update?key=QZLN6Q1ZPQOOG93R&field1=20.00&field2=50.40
+
+OK
+CIPRCV:0,323,HTTP/1.1 400 Bad Request
+Server: nginx/1.7.5
+Date: Thu, 06 Apr 2017 17:44:11 GMT
+Contepe: text/html
+Content-Length: 172
+Connection: 
+
+<html>
+<head><title>400 Bad Request</title><j
+<body bgcolor="white">
+<center><h1>400 Bad Rex/h1></center>
+<hr><center>nginx/1.7.5</center>j
+</html>
+
+
+
++TCPCLOSED:0
+
+OK
+

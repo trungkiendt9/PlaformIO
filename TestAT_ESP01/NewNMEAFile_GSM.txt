@@ -1,0 +1,557 @@
+
+
+^J^
+HS
+Z
+AT
+
+OK
+AT
+
+OK
+AT
+
+OK
+
+
++CME ERROR:58
+AT
+
+OK
+AT
+
+OK
+AT
+
+OK
+AT+COPS=?
+
++COPS: (2,"Viettel","Viettel","45204"),(1,"VINAPHONE","VINAPHONE","45202"),(1,"Mobifone","Mobifone","45201"),(1,"VietnamobileVN","VietnamobileVN","45205"),(1,"BeelineVN","BeelineVN","45207")
+
+OK
+AT+COPS?
+
++COPS: 0,2,"45204"
+
+OK
+ATI
+
+Ai Thinker Co.LTD
+A7 
+V03.03.20160725009H03
+
+OK
+AT+GSV
+
++CME ERROR:58
+AT+GSV
+
++CME ERROR:58
+at+creg?
+
++CREG: 1,1
+
+OK
+AT+CIMI
+
+452048810813514
+
+OK
+AT+GSN
+
+867567021207236
+
+OK
+at+creg?
+
++CREG: 1,1
+
+OK
+AT+CPIN?
+
++CPIN:READY
+
+OK
+AT+CGREG?
+
++CGREG: 0,1,"54f2","71b",0
+
+OK
+ATD988004457
+
+OK
+
++CIEV: "CALL",1
+
++CIEV: "SOUNDER",0
+
++CIEV: "CALL",0
+
+ERROR
+AT+CSQ=?
+
++CSQ: (0-31,99),(0-7,99)
+
+OK
+at+ccid
+
++SCID: SIM Card ID: 89840480088108135143
+
+OK
+AT+CGREG?
+
++CGREG: 0,1,"54f2","71b",0
+
+OK
+AT+CGatt=1
+
+OK
+AT+CPOL?
+
++CPOL: 1,2,"45204"
++CPOL: 2,2,"45703"
++CPOL: 3,2,"45608"
++CPOL: 4,2,"37203"
++CPOL: 5,2,"64303"
++CPOL: 6,2,"62404"
++CPOL: 7,2,"71615"
++CPOL: 8,2,"51403"
++CPOL: 9,2,"64208"
++CPOL: 10,2,"64009"
+
+OK
+ATD0988004457
+
+OK
+
++CIEV: "CALL",1
+
++CIEV: "SOUNDER",1
+
++CIEV: "SOUNDER",0
+
++CIEV: "CALL",0
+
+BUSY
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+ATA
+
+RING
+
++CIEV: "CALL",1
+
+CONNECT
+
++CIEV: "CALL",0
+
+ERROR
+ATD0988004457
+
+OK
+
++CIEV: "CALL",1
+
++CIEV: "SOUNDER",1
+
++CIEV: "SOUNDER",0
+
++CIEV: "CALL",0
+
+BUSY
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+
+RING
+
++CIEV: "CALL",0
+
+ERROR
+AT+DLST
+
+OK
+
++CIEV: "CALL",1
+
++CIEV: "SOUNDER",1
+
++CIEV: "SOUNDER",0
+
++CIEV: "CALL",0
+
+BUSY
+AT+CLCC
+
+OK
+AT+CPUC
+
++CME ERROR:49
+AT+CPUC
+
++CME ERROR:49
+AT+CHUP?
+
++CME ERROR:302
+AT+CHUP?
+
++CME ERROR:302
+AT+CHUP
+
++CME ERROR:268435488
+ATD0988004457
+
+OK
+
++CIEV: "CALL",1
+
++CIEV: "SOUNDER",1
+
++CIEV: "SOUNDER",0
+
++CIEV: "CALL",0
+
+BUSY
+ATD0988004457
+
+OK
+
++CIEV: "CALL",1
+
++CIEV: "SOUNDER",1
+AT+CHUP
+
++CIEV: "CALL",0
+
++CIEV: "SOUNDER",0
+
+OK
+ATD09886733375
+
+OK
+
++CIEV: "CALL",1
+
++CIEV: "SOUNDER",0
+
++CIEV: "CALL",0
+
+ERROR
+ATD0986733375
+
+OK
+
++CIEV: "CALL",1
+
++CIEV: "SOUNDER",1
+AT+CHUP
+
++CIEV: "CALL",0
+
++CIEV: "SOUNDER",0
+
+OK
+AT+CSDH?
+
++CSDH: 0
+
+OK
+AT+CMGF?
+
++CMGF: 0
+
+OK
+AT+CMGS?
+
++CMS ERROR:303
+AT+CMGS=?
+
+OK
+AT+CMGF?
+
++CMGF: 0
+
+OK
+AT+CMGS=17
+
+> 
+AT+CMGF=1
+AT+CSMP=17,167,0,0
+AT+RST
+AT
+AT
+AT
+AT
+
+COMMAND NO RESPONSE!
+AT
+
+
+
+
+
+
+AT+RST
+
+OK
+AT+RST
+
+OK
+AT+RST
+
+OK
+ATD0988004457
+
+OK
+
++CIEV: "CALL",1
+
++CIEV: "SOUNDER",1
+ATH
+
++CIEV: "CALL",0
+
+OK
+AT+CLCC
+
+OK
+AT+CLCC
+
+OK
+
+
++CREG: 1
+
++CREG: 0
+AT
+
+OK
+ATD0988004457
+
+OK
+
++CIEV: "CALL",1
+
++CIEV: "SOUNDER",1
+
++CIEV: "SOUNDER",0
+
++CIEV: "CALL",0
+
+BUSY
+AT+CMGF=1
+
+OK
+AT+CSDH=1
+
+OK
+AT+CMGS=0986733375
+
++CMS ERROR:520
+AT+CMGS=0986733375
+
++CMS ERROR:520
+AT+CMGS="0986733375"
+
+> 
+Bong yeu me Trang!!!
+<ctrl-Z>
+AT+CMGS="098800457"
+
+COMMAND NO RESPONSE!
+AT+RST
+
+AT+RST
+
+OK
+
+^CINIT: 1, 0, 0
+
+^CINIT: 2, 32, 41891
+
++CREG: 2
+
+^CINIT: 8, 2048, 1
+
+^CINIT: 16, 0, 1638440
+
+^CINIT: 32, 0, 0
+
++CREG: 1
+
++CREG: 0
+AT+CMGS="098800457",129
+
++CMS ERROR:304
+AT+CMGS="0988004457",145
+
++CMS ERROR:304
+AT+CMGS="0988004457"
+
++CMS ERROR:304
+AT+CMGS="0988004457"
+
++CMS ERROR:304
+AT+CMGS="0988004457"
+
++CMS ERROR:304
+AT+CMGF=1
+
+OK
+AT+CMGS="0988004457",129
+
+> 
+hello
+120
+
+COMMAND NO RESPONSE!
+AT+CMGF=1
+
+
+^CINIT: 1, 0, 0
+
+^CINIT: 2, 32, 41891
+
++CREG: 3
+
+^CINIT: 8, 2048, 1
+
+^CINIT: 16, 0, 1638440
+
+^CINIT: 32, 0, 0
+
++CREG: 1
+
++CREG: 0
+AT+CSMP?
+
+ERROR
+AT+CSMP?
+
+ERROR
+AT+CSMP?
+
++CSMP: 17,167,0,0
+
+OK
+AT+CMGS="+84988004457"
+
++CMS ERROR:304
+AT+CMGF=1
+
+OK
+AT+CMGS="+84988004457"
+
+> 
+Chao dai ca Kien ! <CTRL-Z>
+
+COMMAND NO RESPONSE!
+AT+CSMP=17,167,0,16
+
+
+^CINIT: 1, 0, 0
+
+^CINIT: 2, 32, 41891
+
++CREG: 3
+
+^CINIT: 8, 2048, 1
+
+^CINIT: 16, 0, 1638440
+
+^CINIT: 32, 0, 0
+
++CREG: 1
+
++CREG: 0
+AT+CSMP=17,167,0,16
+
+ERROR
+AT+CSMP=17,167,0,16
+
+ERROR
+AT+CSMP=17,167,0,16
+
++CMS ERROR:144
+AT+CSCA?
+
++CSCA: "+84980200030",145
+
+OK
