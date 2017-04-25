@@ -43,7 +43,7 @@
 DHT dht(DHTPIN, DHTTYPE);
 
 void setup() {
-        // Khởi tạo cổng serial baud 115200
+        // Khởi tạo cổng serial baud 9600
         Serial.begin(9600);
         Serial.println("DHTxx test!");
         // Bắt đầu đọc dữ liệu
@@ -52,7 +52,7 @@ void setup() {
 
 void loop() {
         // Đợi chuyển đổi dữ liệu khoảng 2s
-        delay(30000);
+        delay(3000);
 
         float h = dht.readHumidity();
         // Đọc giá trị nhiệt độ C (mặc định)

@@ -1,5 +1,7 @@
 /*
    Blink 3 LED không dùng delay tận dụng tài nguyên
+   vktech.edu.vn
+   Khoa điện - điện tử
  */
 
 // KHAI BÁO CÁC THƯ VIỆN LIÊN QUAN
@@ -8,6 +10,8 @@
 #define LED1 RED_LED
 #define LED2 BLUE_LED
 #define LED3 GREEN_LED
+//xem pins_energia.h về định nghĩa các chân tại
+//C:\Users\TRUNGKIEN\.platformio\packages\framework-energiativa\variants\EK-TM4C123GXL
 // TẠO KIỂU DỮ LIỆU CLASS MỚI: tên một lớp các đối tượng là Blink
 class Blink {
 // Khai báo các biến trong class là private mặc định
@@ -23,12 +27,14 @@ Blink(uint8_t LED, unsigned long intervalLED);
 void Update(void);
 };
 // TRIỂN KHAI CÁC HÀM CỦA KIỂU DỮ LIỆU Blink
+// Hàm khởi tạo gán giá trị cho các biến của Blink
 Blink::Blink(uint8_t LED, unsigned long intervalLED) {
         LedPin = LED;
         LedState = false;
         intervalTime = intervalLED;
         pinMode(LedPin, OUTPUT);
 }
+// Chương trình chuyển trạng thái LED
 void Blink::Update(void){
         // lưu timestamp bắt đầu
         unsigned long currentMillis = millis();
@@ -42,8 +48,8 @@ void Blink::Update(void){
 }
 // Khởi tạo các đối tượng kiểu dữ liệu Blink
 Blink led_red(LED1, 300);
-Blink led_blue(LED2, 600);
-Blink led_green(LED3, 1200);
+Blink led_blue(LED2, 590);
+Blink led_green(LED3, 1190);
 //  Các hàm khởi tạo
 void setup() {
 }
