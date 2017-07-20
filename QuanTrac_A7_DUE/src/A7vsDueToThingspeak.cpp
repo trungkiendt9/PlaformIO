@@ -43,8 +43,13 @@ char user_number[]="0988004457";
 char thong_bao[]="Thiet bi bat dau hoat dong.";
 const char IP_SERVER[] = "184.106.153.149"; // IP của thingspeak.com
 const char URL_current_temp[] = "/update?key=QZLN6Q1ZPQOOG93R"; // https://thingspeak.com/channels/51851
+<<<<<<< HEAD
 const unsigned long interval=112000; // Thời gian delay lấy mẫu tính theo milliseconds
 const unsigned int cmd_max_len = 250;
+=======
+const unsigned long interval=118000; // Thời gian delay lấy mẫu
+const unsigned int cmd_max_len = 150;
+>>>>>>> a8cb2d8c095f19dbeff274ca410b17816a396b5a
 
 // KHAI BÁO CÁC BIẾN TOÀN CỤC
 int onModulePin = 2; // Chân kích khởi động 5V cho module A7, thời gian kích mở là 2 giây
@@ -57,8 +62,14 @@ int8_t sendATcommand(char* ATcommand, char* expected_answer, unsigned int timeou
 int8_t sendATcommand2(char* ATcommand, char* expected_answer1, char* expected_answer2, unsigned int timeout);
 void power_on();
 boolean sms_send(char* phone_number, char* sms_message);
+<<<<<<< HEAD
 boolean connect_Server();
 boolean get_data(float number1, float number2);
+=======
+boolean connect_GPRS();
+boolean connect_Server();
+boolean get_data(float* number1, float* number2);
+>>>>>>> a8cb2d8c095f19dbeff274ca410b17816a396b5a
 // CÁC HÀM KHỞI TẠO
 DHT dht(DHTPIN, DHTTYPE);
 void setup() {
@@ -80,7 +91,10 @@ void setup() {
         sendATcommand("AT", "OK", 5000);
         // reset
         sendATcommand("AT+RST", "OK", 10000);
+<<<<<<< HEAD
         delay(10000);
+=======
+>>>>>>> a8cb2d8c095f19dbeff274ca410b17816a396b5a
         // cấu hình các chân vào ra
         pinMode(onModulePin, OUTPUT);
         //sets the PIN code
@@ -91,6 +105,7 @@ void setup() {
         while (sendATcommand2("AT+CREG?", "+CREG: 1,1", "+CREG: 0,3", 5000)== 0) ;
         // Thiết lập SMS mode UCS2
         sendATcommand("AT+CSCS=\"UCS2\"", "OK", 5000);
+<<<<<<< HEAD
         // Gửi thông báo hoạt động
         //sms_send(user_number, thong_bao);
         // kết nối wifi thử tối đa 10 lần
@@ -133,6 +148,15 @@ void loop() {
                 // }
                 previousMillis = millis();
         }
+=======
+        // Thiết lập APN nhà mạng
+        sendATcommand("AT+CSTT=\"v-internet\",\"\",\"\"", "OK", 5000);
+        // Gửi thông báo hoạt động
+        sms_send(user_number, thong_bao);
+}
+// VÒNG LẶP VÔ HẠN
+void loop() {
+>>>>>>> a8cb2d8c095f19dbeff274ca410b17816a396b5a
 
 }
 
@@ -141,10 +165,17 @@ void loop() {
 int8_t sendATcommand(char* ATcommand, char* expected_answer, unsigned int timeout) {
 
         uint8_t x = 0,  answer = 0;
+<<<<<<< HEAD
         char response[1000];
         unsigned long previous;
 
         memset(response, '\0', 1000); // xóa buffer
+=======
+        char response[300];
+        unsigned long previous;
+
+        memset(response, '\0', 300); // xóa buffer
+>>>>>>> a8cb2d8c095f19dbeff274ca410b17816a396b5a
 
         delay(100);
 
@@ -176,10 +207,17 @@ int8_t sendATcommand(char* ATcommand, char* expected_answer, unsigned int timeou
 int8_t sendATcommand2(char* ATcommand, char* expected_answer1, char* expected_answer2, unsigned int timeout) {
 
         uint8_t x = 0,  answer = 0;
+<<<<<<< HEAD
         char response[1000];
         unsigned long previous;
 
         memset(response, '\0', 1000); // Khởi tạo lại chuỗi về 0
+=======
+        char response[300];
+        unsigned long previous;
+
+        memset(response, '\0', 300); // Khởi tạo lại chuỗi về 0
+>>>>>>> a8cb2d8c095f19dbeff274ca410b17816a396b5a
 
         delay(100);
 
@@ -242,6 +280,7 @@ boolean sms_send(char* phone_number, char* sms_message){
 // 4. Hàm kết nối với server dữ liệu thingspeak.com
 boolean connect_Server(){
         memset(cmd_buff, '\0', cmd_max_len); //Đặt lại giá trị của cmd_buff
+<<<<<<< HEAD
         //sendATcommand("AT+CIPCLOSE", "OK", 10000);
         // Kết nối vào mạng dữ liệu
         sendATcommand("AT+CGATT=1", "OK", 5000);
@@ -262,10 +301,24 @@ boolean connect_Server(){
         }
         //sendATcommand("AT+CGDCONT=1,\"IP\",\"v-internet\"", "OK", 5000);
 
+=======
+        // Kết nối vào mạng dữ liệu
+        sendATcommand("AT+CGATT=1", "OK", 5000);
+        snprintf(cmd_buff, sizeof(cmd_buff), "AT+CIPSTART=4,\"TCP\",\"%s\",80", IP_SERVER); //Kết nối server thingspeak
+        if (sendATcommand2(cmd_buff, "OK",  "ERROR", 5000) == 1) {
+                Serial.println("OK Connected Thingspeak");
+                return 1;
+        }
+        else {
+                Serial.println("FAILED Connecting to Thingspeak");
+                return 0;
+        }
+>>>>>>> a8cb2d8c095f19dbeff274ca410b17816a396b5a
 }
 // 5. Hàm gửi data lên server dữ liệu thingspeak.com
 // Hoạt động như 1 TCP Client
 boolean get_data(float number1, float number2) {
+<<<<<<< HEAD
         memset(cmd_buff, '\0', cmd_max_len);
         // snprintf(cmd_buff, sizeof(cmd_buff), "GET %s%s%.2f%s%0.2f", URL_current_temp, "&field1=", number1,"&field2=", number2); //Gộp dữ liệu vào cmd_buff
         // cmd_length = strlen(cmd_buff) + 2;                // Tính chiều dài dữ liệu, +2 cho \r\n
@@ -294,4 +347,27 @@ boolean get_data(float number1, float number2) {
                 return 0;
         }
 
+=======
+        memset(cmd_buff, '\0', 150);
+        snprintf(cmd_buff, sizeof(cmd_buff), "GET %s%s%.2f%s%0.2f", URL_current_temp, "&field1=", number1,"&field2=", number2); //Gộp dữ liệu vào cmd_buff
+        cmd_length = strlen(cmd_buff) + 2;                // Tính chiều dài dữ liệu, +2 cho \r\n
+        snprintf(cmd_buff, sizeof(cmd_buff), "AT+CIPSEND=4,%d", cmd_length); //Gửi kết nối và chờ >
+        if (sendATcommand2(cmd_buff, ">", "ERROR", 5000) == 1) {
+                snprintf(cmd_buff, sizeof(cmd_buff), "GET %s%s%.2f%s%0.2f", URL_current_temp, "&field1=", number1,"&field2=", number2);
+                if (sendATcommand2(cmd_buff, "SEND OK", "ERROR", 5000)==1) {
+                        return 1;
+                }
+        }
+        else {
+                Serial.println("Get failed"); //nếu không gửi được báo failed
+                return 0;
+        }
+        //Đóng tất cả các TCP kết nối trước khi bắt đầu một kết nối khác
+        // for (int8_t i = 0; i < 100; i++) {
+        //         if (sendATcommand("AT+CIPCLOSE=5", "OK", 6000)==1) {
+        //                 Serial.println("CloseIP done");
+        //                 break;
+        //         }
+        // }
+>>>>>>> a8cb2d8c095f19dbeff274ca410b17816a396b5a
 }
