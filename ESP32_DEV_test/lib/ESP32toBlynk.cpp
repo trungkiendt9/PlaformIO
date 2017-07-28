@@ -39,6 +39,7 @@ char auth[] = "3629ddead6634ac59acdcc05e91b780b";
 const char* my_ssid     = "netis";
 const char* my_password = "password";
 uint8_t my_bssid[6] = { 0x04, 0x8d, 0x38, 0x24, 0xba, 0x3f};
+//begin(char* ssid, char *passphrase = NULL, int32_t channel = 0, const uint8_t* bssid = NULL, bool connect = true);
 void setup()
 {
         Serial.begin(115200);
@@ -53,7 +54,6 @@ void setup()
         Serial.println("WiFi connected.");
         Serial.println("IP address: ");
         Serial.println(WiFi.localIP());
-        WiFi.begin(my_ssid,my_password,16,my_bssid, true);
         Blynk.begin(auth, my_ssid, my_password);
 }
 
