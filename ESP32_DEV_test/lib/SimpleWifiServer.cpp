@@ -49,7 +49,7 @@ void setup()
         Serial.println(my_ssid);
 
         //WiFi.begin(ssid, password);
-        WiFi.begin(my_ssid,my_password,16,my_bssid, true);
+        WiFi.begin(my_ssid,my_password,1,my_bssid);
 
         while (WiFi.status() != WL_CONNECTED) {
                 delay(500);
