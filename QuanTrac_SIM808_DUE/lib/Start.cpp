@@ -1,28 +1,61 @@
-#include <Arduino.h>
-#include "QuanTrac.h"
-//1. Hàm setup chạy 1 lần
-void Start(){
-// Khởi động
-        power_on();
-        pinMode(POWER_KEY, OUTPUT);
+/*
+    advancedFunctions.h - A collection of utilities for Arduino DUE to
+    use the advanced functions of the integrated peripherals of
+    the Atmel SAM3X8E microcontroller.
+
+    For more infos, please read the README.txt file.
+
+    Written by Leonardo Miliani <www DOT leonardomiliani DOT com>
+
+
+    The latest version of this library can be found at:
+    http://www.leonardomiliani.com/
+    or at:
+    https://github.com/leomil72
+
+
+    This sketch tests the WDT blinking the integrated LED for a while
+    then resetting the MCU.
+
+
+    This code is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public
+    License as published by the Free Software Foundation; either
+    version 3.0 of the License, or (at your option) any later version.
+
+    You should have received a copy of the GNU General Public License
+    along with this library.  If not, see <http://www.gnu.org/licenses/>
+
+    This code is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+   Copyleft 2013
+
+ */
+
+//include the library
+#include "advancedFunctions.h"
+
+const byte ledPin = LED_BUILTIN;
+byte ledStatus = 1;
+
+//set up the sketch
+void setup() {
+        wdt.enable(1000); //1000 ms of survival
+        pinMode(ledPin, OUTPUT);
 }
 
-// 2. Hàm khới động mạch truyền thông và định vị, chú ý ngắt nên nguồn ngoài khi nạp chương trình
-void power_on(){
-        uint8_t answer=0;
 
-        // Kiểm tra xem module đã khởi động chưa?
-        answer = sendATcommand("AT", "OK", RESPONSE_TIMEOUT_MILLISECONDS);
-        if (answer == 0)
-        {
-                // Bật xung 3s
-                digitalWrite(POWER_KEY,HIGH);
-                delay(3000);
-                digitalWrite(POWER_KEY,LOW);
-
-                // Đợi phản hồi từ module
-                while(answer == 0) { // Gửi lệnh AT sau mỗi RESPONSE_TIMEOUT_MILLISECONDS
-                        answer = sendATcommand("AT", "OK", RESPONSE_TIMEOUT_MILLISECONDS);
-                }
+//main loop
+void loop() {
+        static byte counter = 0;
+        digitalWrite(ledPin, ledStatus);
+        delay(500);
+        ledStatus ^= 1;
+        counter++;
+        if (counter > 10) { //after 10 timer, we freeze the code into an infinite loop
+                for(;; ) ; //this is a deadlock
         }
+        wdt.restart(); //this ensures that the WDT will not reset the MCU
 }

@@ -12,25 +12,35 @@
  *  GND                                             |  GND   | GND
  *  TX (J101A in schematic)                         |  RX3   | x
  *  RX (J101C in schematic)                         |  TX3   | x
+ * AM2315 vs DUE. dùng điện trở treo 10k
+ * Connect RED of the AM2315 sensor to 3.3V
+ * Connect BLACK to Ground
+ * Connect WHITE to i2c clock - SCL to SCL pin 21 - on '168/'328 Arduino Uno/Duemilanove/etc thats Analog 5
+ * Connect YELLOW to i2c data - SDA to SDA pin 20 - on '168/'328 Arduino Uno/Duemilanove/etc thats Analog 4
  *  Cài đặt thư viện cho platform atmelsam, framework =arduino
  *  Chuyển mã PDU cho các ký tự UCS2 - 16 bit : http://www.multisilicon.com/blog/a22201774~/pdu.htm
  */
 #include <Arduino.h>
 #include "QuanTrac.h"
-#include "DHT.h"
+// #include "DHT.h"
+#include <Wire.h>
+#include "Adafruit_AM2315.h"
 
 
 // CÁC HÀM KHỞI TẠO
-DHT dht(DHTPIN, DHTTYPE);
+// DHT dht(DHTPIN, DHTTYPE);
+Adafruit_AM2315 am2315;
 void setup() {
+        am2315.begin();
+        pinMode(POWER_KEY, OUTPUT);
         // khởi tạo thành chuỗi cmd_buff
         memset(GLO_cmd_buff, '\0', AT_CMD_MAX_LENGHT);
         // port mặc định giữa máy tính với RX và TX của DUE
         Serial.begin(9600);
-        // port RX3 và TX3 của DUE giáo tiếp với SIMCOM
+        // port RX3 và TX3 của DUE giao tiếp với SIMCOM
         Serial3.begin(9600);
         // khởi động
-        Start();
+        power_on();
         // Kiểm tra xem thẻ SIM đã được đăng ký vào nhà mạng hay chưa?
         while (sendATcommand2("AT+CREG?", "+CREG: 0,1", "+CREG: 0,5", RESPONSE_TIMEOUT_MILLISECONDS)== 0) ;
         // Thiết lập SMS mode UCS2
@@ -44,24 +54,45 @@ void setup() {
         //float t = 29.11, h = 95.07;
         voice_call(USER_PHONE_NUMBER, AUTO_END_CALL_TIMEOUT);
         //get_data_single_mode(t, h);
+        Serial.println("AM2315 run");
+
+        if (!am2315.begin()) {
+                Serial.println("Sensor not found, check wiring & pullups!");
+                while (1) ;
+        }
 }
 
 // VÒNG LẶP VÔ HẠN
 void loop() {
-        delay(102000);  // trừ hao 18s
-        float h = dht.readHumidity();
-        float t = dht.readTemperature();
-        get_data_single_mode(t, h);
+        unsigned long currentMillis = millis(); // grab current time
+        if ((unsigned long)(currentMillis - previousMillis) >= interval) {
+                delay(300);
+                float t = am2315.readTemperature();
+                delay(300);
+                float h = am2315.readHumidity();
+                Serial.println();
+                Serial.println(h);
+                delay(300);
+                Serial.println(t);
+                if (isnan(h) || isnan(t)) {
+                        Serial.println("Failed to read from AM2315 sensor!");
+                        return;
+                }
+                get_data_single_mode(t, h);
+                previousMillis = millis();
+        }
 
 }
+
+
 
 // TRIỂN KHAI CÁC HÀM
 //1. Hàm setup chạy 1 lần
-void Start(){
-// Khởi động
-        power_on();
-        pinMode(POWER_KEY, OUTPUT);
-}
+// void Start(){
+// // Khởi động
+//         power_on();
+//         delay(5000);
+// }
 
 // 2. Hàm khới động mạch truyền thông và định vị, chú ý ngắt nên nguồn ngoài khi nạp chương trình
 void power_on(){
@@ -75,7 +106,7 @@ void power_on(){
                 digitalWrite(POWER_KEY,HIGH);
                 delay(3000);
                 digitalWrite(POWER_KEY,LOW);
-                delay(5000); // Đợi cho module khởi động hoàn tất
+                delay(3000); // Đợi cho module khởi động hoàn tất
 
                 // Đợi phản hồi từ module
                 while(answer == 0) { // Gửi lệnh AT sau mỗi RESPONSE_TIMEOUT_MILLISECONDS
@@ -284,17 +315,17 @@ boolean get_data_single_mode(float sensor1, float sensor2){
         return answer;
 }
 // 8. Hàm tính trung bình giá trị cảm biến Digital sensors
-float average_humidity(unsigned int sample_number)
-{
-        float sum = 0.0;
-        for (int8_t i = 0; i < sample_number; i++) {
-                float temp = dht.readHumidity();
-                sum += temp; // đọc giá trị cảm biến
-                Serial.print("Sample");
-                Serial.print(i);
-                Serial.print(": ");
-                Serial.println(temp);
-                delay(2000); // Tốc độ lấy mẫu của cảm biến
-        }
-        return sum / sample_number;
-}
+// float average_humidity(unsigned int sample_number)
+// {
+//         float sum = 0.0;
+//         for (int8_t i = 0; i < sample_number; i++) {
+//                 float temp = dht.readHumidity();
+//                 sum += temp; // đọc giá trị cảm biến
+//                 Serial.print("Sample");
+//                 Serial.print(i);
+//                 Serial.print(": ");
+//                 Serial.println(temp);
+//                 delay(2000); // Tốc độ lấy mẫu của cảm biến
+//         }
+//         return sum / sample_number;
+// }
