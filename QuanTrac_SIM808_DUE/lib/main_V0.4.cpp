@@ -59,7 +59,7 @@ void setup() {
         // Gọi điện tới nhà quản lý
         //float t = 29.11, h = 95.07;
         voice_call(USER_PHONE_NUMBER, AUTO_END_CALL_TIMEOUT);
-        //get_data_single_mode(t, h);
+        //get_data_single_mode_2(t, h);
         Serial.println("AM2315 run");
 
         if (!am2315.begin()) {
@@ -88,7 +88,7 @@ void loop() {
                         am2315.begin();
                         return;
                 }
-                get_data_single_mode(t, h);
+                get_data_single_mode_2(t, h);
                 previousMillis = millis();
         }
 
@@ -100,9 +100,9 @@ void loop() {
                 //lpg = values[0];
                 //lpg = mq2.readLPG();           // Đọc giá trị LPG
                 //co = values[1];
-                co = mq2.readCO();       // Đọc giá trị LPG
+                co = mq2.readCO();       // Đọc giá trị CO
                 //smoke = values[2];
-                smoke = mq2.readSmoke();  // Đọc giá trị LPG
+                smoke = mq2.readSmoke();  // Đọc giá trị Smoke
                 if (co > 10 || smoke > 10 ) {
                         sms_send(USER_PHONE_NUMBER, "Canh bao phat hien kha nang co chay!");
                         voice_call(USER_PHONE_NUMBER, 30000);
@@ -255,7 +255,7 @@ boolean voice_call(char* phone_number, unsigned int time_end){
         return 1;
 }
 // 7. Hàm gửi dữ liệu lên Thingspeak
-boolean get_data_single_mode(float sensor1, float sensor2){
+boolean get_data_single_mode_2(float sensor1, float sensor2){
         uint8_t answer = 0;
         // chế độ Single-connection mode
         if (sendATcommand2("AT+CIPMUX=0", "OK", "ERROR", 1000) == 1)
