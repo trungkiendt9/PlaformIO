@@ -111,7 +111,7 @@ void loop() {
                 //smoke = values[2];
                 smoke = mq2.readSmoke();  // Đọc giá trị Smoke
 
-                if ((co > 100 || smoke > 100 )) {
+                if ((co > Smoke_threshold || smoke > Smoke_threshold )) {
                         Serial.println("Phát hiện khả năng cháy"); // while raining at threshold level - see text
                         smoke_counter++;
                         Serial.println(co);
@@ -123,14 +123,15 @@ void loop() {
                         // sms_send(USER_PHONE_NUMBER, "Canh bao phat hien kha nang co chay!");
                         char buffer[480];
                         //sprintf(buffer, "Canh bao phat hien kha nang co chay!. Toa do %6f", Latitude);
-                        snprintf(buffer, sizeof(buffer), "Canh bao phat hien kha nang co chay!. %s%.6f,%.6f.","https://www.google.com/maps/?q=", Latitude, Longtitude);
+                        snprintf(buffer, sizeof(buffer), "Can
+                        h bao phat hien kha nang co chay!. %s%.6f,%.6f.","https://www.google.com/maps/?q=", Latitude, Longtitude);
                         sms_send(USER_PHONE_NUMBER, buffer);
                         voice_call(USER_PHONE_NUMBER, 30000);
                         voice_call(USER_PHONE_NUMBER, 30000);
                         voice_call(USER_PHONE_NUMBER, 30000);
                 }
 
-                if (co < 100 && smoke < 100 ) {
+                if (co < Smoke_threshold && smoke < Smoke_threshold ) {
                         smoke_counter = 0;
                 }
                 previousMillis1 = millis();

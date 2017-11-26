@@ -45,6 +45,7 @@ const unsigned int RainSen_pin = A1;
 const unsigned int Rain_threshold = 700;
 const unsigned int Rain_max_count = 2;
 const unsigned int Smoke_max_count = 5;
+const unsigned int Smoke_threshold = 300;
 // #define DHTPIN 53  //Pin data out của DHT22
 // #define DHTTYPE DHT22   // DHT 22  (AM2302), AM2321
 
