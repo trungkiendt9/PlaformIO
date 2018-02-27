@@ -1,0 +1,310 @@
+
+//#define BLYNK_PRINT Serial
+
+// Select your modem:
+#define TINY_GSM_MODEM_SIM800
+//#define TINY_GSM_MODEM_SIM900
+//#define TINY_GSM_MODEM_M590
+//#define TINY_GSM_MODEM_A6
+void software_Reset();
+
+
+//#define BLYNK_HEARTBEAT 30
+
+#include <TinyGsmClient.h>
+#include <BlynkSimpleSIM800.h>
+#include <TimeLib.h>
+#include <WidgetRTC.h>
+
+#define TRUE          1
+#define FALSE         0
+
+// You should get Auth Token in the Blynk App.
+// Go to the Project Settings (nut icon).
+char auth[] = "d2b1ef8447e2497b9c41aa93df677f94";
+char server[]          = "blynk-cloud.com";
+unsigned int port      = 8442;
+// Your GPRS credentials
+// Leave empty, if missing user or pass
+char apn[]  = "v-internet";
+char user[] = "";
+char pass[] = "";
+// Khai báo các biến toàn cục
+bool Bit_lock = FALSE;
+bool Bit_Timer = FALSE;
+char currentTime[9];
+char currentDate[11];
+long startTimeInSecs;
+long stopTimeInSecs;
+unsigned int nowseconds;
+unsigned int startseconds;
+unsigned int stopseconds;
+// Hardware Serial on Mega, Leonardo, Micro
+// #define SerialAT Serial1
+// Chân chức năng trên arduino
+#define STOP_PIN 6
+#define UP_PIN 7
+#define DOWN_PIN  8
+#define RELAY_4  3
+#define RELAY_5  A5
+#define RELAY_6  A4
+#define LED_BLINK  13
+// #define A_CHANNEL 3
+// #define B_CHANNEL 5
+// #define C_CHANNEL 2
+// #define D_CHANNEL 4
+
+WidgetRTC rtc;
+BlynkTimer timer;
+
+// or Software Serial on Uno, Nano
+#include <SoftwareSerial.h>
+SoftwareSerial SerialAT(9, 10); // RX, TX chân PWM
+
+TinyGsm modem(SerialAT);
+///////////////Đồng bộ hóa/////////////////////////////////////
+BLYNK_CONNECTED() {
+        Blynk.syncAll();
+}
+// Hàm đọc giá trị Virtual PIN V0 viết giá trị lên LED_BLINK
+BLYNK_WRITE(V0) //Send data from app to hardware, hàm chỉ được gọi khi ta bấm nút V0 mà thôi
+{
+        int pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
+        //Serial.println(pinValue);
+
+        digitalWrite(STOP_PIN, pinValue);
+        digitalWrite(LED_BLINK, pinValue);
+        delay(300);
+        if (pinValue == TRUE) {
+                Blynk.notify("Bật RELAY 1!");
+        } else {
+                Blynk.notify("Tắt RELAY 1!");
+        }
+
+
+        // process received value
+}
+BLYNK_WRITE(V1) //Send data from app to hardware
+{
+        int pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
+        //Serial.println(pinValue);
+        digitalWrite(UP_PIN, pinValue);
+        digitalWrite(LED_BLINK, pinValue);
+        digitalWrite(LED_BLINK, pinValue);
+        delay(300);
+        if (pinValue == TRUE) {
+                Blynk.notify("Bật RELAY 2!");
+        } else {
+                Blynk.notify("Tắt RELAY 2!");
+        }
+        // process received value
+
+}
+BLYNK_WRITE(V2) //Send data from app to hardware
+{
+        int pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
+        //Serial.println(pinValue);
+        digitalWrite(DOWN_PIN, pinValue);
+        digitalWrite(LED_BLINK, pinValue);
+        delay(300);
+        if (pinValue == TRUE) {
+                Blynk.notify("Bật RELAY 3!");
+        } else {
+                Blynk.notify("Tắt RELAY 3!");
+        }
+
+
+        // process received value
+}
+BLYNK_WRITE(V3) //Send data from app to hardware
+{
+        int pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
+        //Serial.println(pinValue);
+        digitalWrite(RELAY_6, pinValue);
+        digitalWrite(LED_BLINK, pinValue);
+        delay(300);
+        if (pinValue == TRUE) {
+                Blynk.notify("Bật RELAY 6!");
+        } else {
+                Blynk.notify("Tắt RELAY 6!");
+        }
+
+
+        // process received value
+}
+BLYNK_WRITE(V4) //Send data from app to hardware
+{
+        int pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
+        //Serial.println(pinValue);
+        digitalWrite(RELAY_5, pinValue);
+        digitalWrite(LED_BLINK, pinValue);
+        delay(300);
+        if (pinValue == TRUE) {
+                Blynk.notify("Bật RELAY 5!");
+        } else {
+                Blynk.notify("Tắt RELAY 5!");
+        }
+
+
+        // process received value
+}
+BLYNK_WRITE(V5) //Send data from app to hardware
+{
+        int pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
+        //Serial.println(pinValue);
+        digitalWrite(RELAY_4, pinValue);
+        digitalWrite(LED_BLINK, pinValue);
+        delay(300);
+        if (pinValue == TRUE) {
+                Blynk.notify("Bật RELAY 4!");
+        } else {
+                Blynk.notify("Tắt RELAY 4!");
+        }
+
+
+        // process received value
+}
+// Bit timer bật hoặc tắt
+BLYNK_WRITE(V15) //Bit_Timer
+{
+        bool pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
+        Bit_Timer = pinValue;         // đổi trạng thái
+}
+// Lấy ngày và giờ
+void clockDisplay()
+{
+        // You can call hour(), minute(), ... at any time
+        // Please see Time library examples for details
+
+        //  String currentTime = String(hour()) + ":" + minute() + ":" + second();
+        //  String currentDate = String(day()) + " " + month() + " " + year();
+        sprintf(currentTime, "%02d:%02d:%02d", hour(), minute(), second());
+        sprintf(currentDate, "%02d/%02d/%04d", month(), day(), year());
+        Serial.print("Current time: ");
+        Serial.print(currentTime);
+        Serial.print(" ");
+        Serial.print(currentDate);
+        Serial.println();
+
+        // Send time to the App
+        Blynk.virtualWrite(V12, currentTime);
+        // Send date to the App
+        Blynk.virtualWrite(V13, currentDate);
+
+
+}
+// Hiển thị đồng hồ thời gian thực
+BLYNK_WRITE(V11) {   // Scheduler #1 Time Input widget
+        TimeInputParam t(param);
+        nowseconds = ((hour() * 3600) + (minute() * 60) + second());
+        startseconds = (t.getStartHour() * 3600) + (t.getStartMinute() * 60);
+        stopseconds = (t.getStopHour() * 3600) + (t.getStopMinute() * 60);
+        Blynk.virtualWrite(V14, startseconds," - ", stopseconds);
+        Serial.println("Thực hiện Time Input");
+
+
+}
+// Lập trình cho Timer 1
+void activetoday(){         // check if schedule #1 or #2 should run today
+//        if(year() != 1970) {
+//                Blynk.syncVirtual(V0); // sync scheduler #1
+//                //Blynk.syncVirtual(V2); // sync scheduler #2
+//        }
+        nowseconds = ((hour() * 3600) + (minute() * 60) + second());
+        Serial.print("nowseconds: ");
+        Serial.println(nowseconds);
+        Serial.print("startseconds: ");
+        Serial.println(startseconds);
+        Serial.print("stopseconds: ");
+        Serial.println(stopseconds);
+        if(nowseconds >= startseconds - 31 && nowseconds <= startseconds + 31 && Bit_Timer == TRUE) {                   // 62s on 60s timer ensures 1 trigger command is sent
+                digitalWrite(STOP_PIN, 255);         // turn on virtual LED
+                digitalWrite(LED_BLINK, 255);
+                delay(300);
+                Blynk.notify("Timer bật RELAY 1!");
+                Serial.println("Schedule 1 started");
+                //digitalWrite(15, 1);
+        }
+        if(nowseconds >= stopseconds - 31 && nowseconds <= stopseconds + 31 && Bit_Timer == TRUE ) {         // 62s on 60s timer ensures 1 trigger command is sent
+                digitalWrite(STOP_PIN, 0);         // turn OFF virtual LED
+                delay(300);
+                digitalWrite(LED_BLINK, 0);
+                Blynk.notify("Timer tắt RELAY 1!");
+                Serial.println("Schedule 1 finished");
+                //digitalWrite(15, 0);
+        }
+
+
+}
+void CheckConnection() {   // check every 11s if connected to Blynk server
+        if (!Blynk.connected()) {
+                //Serial.println("Khong ket noi toi Blynk server");
+                //Blynk.connectNetwork(apn, user, pass); // try to connect to server with default timeout
+                //Blynk.connect(10000);
+                software_Reset();
+                //Blynk.begin(auth, modem, apn, user, pass);
+        }
+        else {
+                //Serial.println("Da ket noi Blynk server");
+        }
+}
+
+void setup()
+{
+        // Debug console
+        pinMode(STOP_PIN, OUTPUT);
+        pinMode(UP_PIN, OUTPUT);
+        pinMode(DOWN_PIN, OUTPUT);
+        pinMode(RELAY_4, OUTPUT);
+        pinMode(RELAY_5, OUTPUT);
+        pinMode(RELAY_6, OUTPUT);
+
+        pinMode(LED_BLINK, OUTPUT);
+
+        // pinMode(A_CHANNEL, INPUT);
+        // pinMode(B_CHANNEL, INPUT);
+        // pinMode(C_CHANNEL, INPUT);
+        // pinMode(D_CHANNEL, INPUT);
+
+        Serial.begin(4800);
+
+        delay(10);
+
+        // Set GSM module baud rate
+        SerialAT.begin(4800); // Rate tối đa của SoftwareSerial là 9600
+        delay(3000);
+
+        // Restart takes quite some time
+        // To skip it, call init() instead of restart()
+        //Serial.println("Khoi dong modem...");
+        //delay(3000);
+        //software_Reset();
+        modem.restart();
+
+        // Unlock your SIM card with a PIN
+        //modem.simUnlock("1234");
+
+        // Blynk.config(modem, auth, server, port);
+        // Blynk.connectNetwork(apn, user, pass);
+        // Blynk.connect();
+
+        Blynk.begin(auth, modem, apn, user, pass);
+        rtc.begin();
+        timer.setInterval(30000L, CheckConnection);
+        timer.setInterval(1000L, clockDisplay);
+        timer.setInterval(30000L, activetoday);
+        //Blynk.virtualWrite(V10, "Không khóa");
+}
+
+void loop()
+{
+        if (Blynk.connected()) {
+                Blynk.run();
+        }
+        timer.run();
+}
+
+void software_Reset() // Restarts program from beginning but does not reset the peripherals and registers
+{
+        asm volatile ("jmp 0");
+}

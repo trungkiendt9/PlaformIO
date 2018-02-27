@@ -46,7 +46,8 @@
 // You should get Auth Token in the Blynk App.
 // Go to the Project Settings (nut icon).
 char auth[] = "26916e9f5716461fabcb4fc1c92def26";
-
+char server[]          = "blynk-cloud.com";
+unsigned int port      = 8442;
 // Your GPRS credentials
 // Leave empty, if missing user or pass
 char apn[]  = "v-internet";
@@ -74,10 +75,36 @@ BLYNK_WRITE(V0) //Send data from app to hardware
 
         // process received value
 }
+BLYNK_WRITE(V1) //Send data from app to hardware
+{
+        int pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
+        Serial.println(pinValue);
+        digitalWrite(12, pinValue);
+
+        // process received value
+}
+BLYNK_WRITE(V2) //Send data from app to hardware
+{
+        int pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
+        Serial.println(pinValue);
+        digitalWrite(11, pinValue);
+
+        // process received value
+}
+BLYNK_WRITE(V3) //Send data from app to hardware
+{
+        int pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
+        Serial.println(pinValue);
+        // digitalWrite(LED_BLINK, pinValue);
+
+        // process received value
+}
 void CheckConnection() {   // check every 11s if connected to Blynk server
         if (!Blynk.connected()) {
                 Serial.println("Not connected to Blynk server");
-                Blynk.connect(); // try to connect to server with default timeout
+                //Blynk.connectNetwork(apn, user, pass); // try to connect to server with default timeout
+                //Blynk.connect(10000);
+                Blynk.begin(auth, modem, apn, user, pass);
         }
         else {
                 Serial.println("Connected to Blynk server");
@@ -88,6 +115,8 @@ void setup()
 {
         // Debug console
         pinMode(LED_BLINK, OUTPUT);
+        pinMode(12, OUTPUT);
+        pinMode(11, OUTPUT);
         Serial.begin(9600);
 
         delay(10);
@@ -103,6 +132,10 @@ void setup()
 
         // Unlock your SIM card with a PIN
         //modem.simUnlock("1234");
+
+        // Blynk.config(modem, auth, server, port);
+        // Blynk.connectNetwork(apn, user, pass);
+        // Blynk.connect();
 
         Blynk.begin(auth, modem, apn, user, pass);
         timer.setInterval(5000L, CheckConnection);
