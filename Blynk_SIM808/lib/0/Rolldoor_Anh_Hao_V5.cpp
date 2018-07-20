@@ -1,8 +1,10 @@
 
-//#define BLYNK_PRINT Serial
+
+#define BLYNK_PRINT Serial
 
 // Select your modem:
 #define TINY_GSM_MODEM_SIM800
+// #define BLYNK_TIMEOUT_MS 5000
 //#define TINY_GSM_MODEM_SIM900
 //#define TINY_GSM_MODEM_M590
 //#define TINY_GSM_MODEM_A6
@@ -18,7 +20,7 @@ void software_Reset();
 
 // You should get Auth Token in the Blynk App.
 // Go to the Project Settings (nut icon).
-char auth[] = "619b8b83aa1c44ef99a107dedece4a3d";
+char auth[] = "26916e9f5716461fabcb4fc1c92def26"; // Anh Hảo
 char server[]          = "blynk-cloud.com";
 unsigned int port      = 8442;
 // Your GPRS credentials
@@ -40,6 +42,10 @@ bool Bit_lock = FALSE;
 #define C_CHANNEL 2
 #define D_CHANNEL 4
 
+#define HAND_STOP A4
+#define HAND_UP A2
+#define HAND_DOWN 12
+
 
 BlynkTimer timer;
 
@@ -49,19 +55,19 @@ SoftwareSerial SerialAT(9, 10); // RX, TX chân PWM
 
 TinyGsm modem(SerialAT);
 
-//Hàm đọc giá trị Virtual PIN V0 viết giá trị lên LED_BLINK
-// BLYNK_WRITE(V0) //Send data from app to hardware, hàm chỉ được gọi khi ta bấm nút V0 mà thôi
-// {
-//         int pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
-//         //Serial.println(pinValue);
-//         if (Bit_lock == 0) {
-//                 digitalWrite(STOP_PIN, pinValue);
-//                 digitalWrite(LED_BLINK, pinValue);
-//                 delay(300);
-//         }
-//
-//         // process received value
-// }
+// Hàm đọc giá trị Virtual PIN V0 viết giá trị lên LED_BLINK
+BLYNK_WRITE(V0) //Send data from app to hardware, hàm chỉ được gọi khi ta bấm nút V0 mà thôi
+{
+        int pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
+        //Serial.println(pinValue);
+        if (Bit_lock == 0) {
+                digitalWrite(STOP_PIN, pinValue);
+                digitalWrite(LED_BLINK, pinValue);
+                delay(300);
+        }
+
+        // process received value
+}
 BLYNK_WRITE(V1) //Send data from app to hardware
 {
         int pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
@@ -104,19 +110,10 @@ BLYNK_WRITE(V3) //Send data from app to hardware
                 //Serial.print("Bit lock:");
                 //Serial.println(Bit_lock);
         }
-        // digitalWrite(LOCK_PIN, pinValue);
-        // process received value
-}
-BLYNK_WRITE(V4) //Send data from app to hardware, hàm chỉ được gọi khi ta bấm nút V0 mà thôi
-{
-        int pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
-        //Serial.println(pinValue);
-        if (Bit_lock == 0) {
-                digitalWrite(STOP_PIN, pinValue);
-                digitalWrite(LED_BLINK, pinValue);
-                delay(300);
-        }
 
+
+
+        // digitalWrite(LOCK_PIN, pinValue);
         // process received value
 }
 void CheckConnection() {   // check every 11s if connected to Blynk server
@@ -126,6 +123,8 @@ void CheckConnection() {   // check every 11s if connected to Blynk server
                 //Blynk.connect(10000);
                 //software_Reset();
                 Blynk.begin(auth, modem, apn, user, pass);
+                // config(gsm, auth, domain, port);
+                // connectNetwork(apn, user, pass);
         }
         else {
                 //Serial.println("Da ket noi Blynk server");
@@ -144,6 +143,10 @@ void setup()
         pinMode(B_CHANNEL, INPUT);
         pinMode(C_CHANNEL, INPUT);
         pinMode(D_CHANNEL, INPUT);
+
+        pinMode(HAND_STOP, INPUT);
+        pinMode(HAND_UP, INPUT);
+        pinMode(HAND_DOWN, INPUT);
 
         Serial.begin(4800);
 
@@ -167,9 +170,11 @@ void setup()
         // Blynk.connectNetwork(apn, user, pass);
         // Blynk.connect();
 
-        Blynk.begin(auth, modem, apn, user, pass);
-        timer.setInterval(60000L, CheckConnection);
-        Blynk.virtualWrite(V10, "Không khóa");
+        //Blynk.begin(auth, modem, apn, user, pass);
+        //Blynk.begin(auth, modem, apn, user, pass);
+        timer.setInterval(180000L, CheckConnection);
+        //Blynk.virtualWrite(V10, "Không khóa");
+        Serial.println("OUT SETUP...");
 }
 
 void loop()
@@ -179,68 +184,71 @@ void loop()
         }
         else
         {
-                // // Code for A_CHANNEL
-                // int a_rf = digitalRead(A_CHANNEL);
-                // if (Bit_lock == 0) {
-                //         digitalWrite(STOP_PIN, a_rf);
-                //         digitalWrite(LED_BLINK, a_rf);
-                //         delay(200);
-                // }
-                // else {
-                //         digitalWrite(STOP_PIN, FALSE);
-                // }
-                // // Code for B_CHANNEL
-                // int b_rf = digitalRead(B_CHANNEL);
-                // if (Bit_lock == 0) {
-                //         digitalWrite(UP_PIN, b_rf);
-                //         digitalWrite(LED_BLINK, b_rf);
-                //         delay(200);
-                // }
-                // else {
-                //         digitalWrite(UP_PIN, FALSE);
-                // }
-                // // Code for C_CHANNEL
-                // int c_rf = digitalRead(C_CHANNEL);
-                // if (Bit_lock == 0) {
-                //         digitalWrite(DOWN_PIN, c_rf);
-                //         digitalWrite(LED_BLINK, c_rf);
-                //         delay(200);
-                // }
-                // else {
-                //         digitalWrite(DOWN_PIN, FALSE);
-                // }
+                Serial.println("OUT LOOO.....P!!!!!");
+                // Code for A_CHANNEL
+                int a_rf = digitalRead(A_CHANNEL);
+                if (Bit_lock == 0) {
+                        digitalWrite(STOP_PIN, a_rf);
+                        digitalWrite(LED_BLINK, a_rf);
+                        delay(120);
+                }
+                else {
+                        digitalWrite(STOP_PIN, FALSE);
+                }
+                // Code for B_CHANNEL
+                int b_rf = digitalRead(B_CHANNEL);
+                if (Bit_lock == 0) {
+                        digitalWrite(UP_PIN, b_rf);
+                        digitalWrite(LED_BLINK, b_rf);
+                        delay(120);
+                }
+                else {
+                        digitalWrite(UP_PIN, FALSE);
+                }
+                // Code for C_CHANNEL
+                int c_rf = digitalRead(C_CHANNEL);
+                if (Bit_lock == 0) {
+                        digitalWrite(DOWN_PIN, c_rf);
+                        digitalWrite(LED_BLINK, c_rf);
+                        delay(120);
+                }
+                else {
+                        digitalWrite(DOWN_PIN, FALSE);
+                }
         }
+
         timer.run();
+
 // Code for A_CHANNEL
-//         int a_rf = digitalRead(A_CHANNEL);
-//         if (Bit_lock == 0) {
-//                 digitalWrite(STOP_PIN, a_rf);
-//                 digitalWrite(LED_BLINK, a_rf);
-//                 delay(200);
-//         }
-//         else {
-//                 digitalWrite(STOP_PIN, FALSE);
-//         }
-// // Code for B_CHANNEL
-//         int b_rf = digitalRead(B_CHANNEL);
-//         if (Bit_lock == 0) {
-//                 digitalWrite(UP_PIN, b_rf);
-//                 digitalWrite(LED_BLINK, b_rf);
-//                 delay(200);
-//         }
-//         else {
-//                 digitalWrite(UP_PIN, FALSE);
-//         }
-// // Code for C_CHANNEL
-//         int c_rf = digitalRead(C_CHANNEL);
-//         if (Bit_lock == 0) {
-//                 digitalWrite(DOWN_PIN, c_rf);
-//                 digitalWrite(LED_BLINK, c_rf);
-//                 delay(200);
-//         }
-//         else {
-//                 digitalWrite(DOWN_PIN, FALSE);
-//         }
+        int a_rf = digitalRead(A_CHANNEL);
+        if (Bit_lock == 0) {
+                digitalWrite(STOP_PIN, a_rf);
+                digitalWrite(LED_BLINK, a_rf);
+                delay(120);
+        }
+        else {
+                digitalWrite(STOP_PIN, FALSE);
+        }
+// Code for B_CHANNEL
+        int b_rf = digitalRead(B_CHANNEL);
+        if (Bit_lock == 0) {
+                digitalWrite(UP_PIN, b_rf);
+                digitalWrite(LED_BLINK, b_rf);
+                delay(120);
+        }
+        else {
+                digitalWrite(UP_PIN, FALSE);
+        }
+// Code for C_CHANNEL
+        int c_rf = digitalRead(C_CHANNEL);
+        if (Bit_lock == 0) {
+                digitalWrite(DOWN_PIN, c_rf);
+                digitalWrite(LED_BLINK, c_rf);
+                delay(120);
+        }
+        else {
+                digitalWrite(DOWN_PIN, FALSE);
+        }
 // Code for D_CHANNEL
         // int d_rf = digitalRead(D_CHANNEL);
         // if (d_rf && Bit_lock == TRUE) {

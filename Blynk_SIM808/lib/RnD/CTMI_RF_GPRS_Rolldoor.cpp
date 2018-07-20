@@ -18,7 +18,7 @@ void software_Reset();
 
 // You should get Auth Token in the Blynk App.
 // Go to the Project Settings (nut icon).
-char auth[] = "abe12b930bc04998ab6ad2420ae73dd9"; //VKTE11
+char auth[] = "5dace783f8664ac9b28b3b715d76afad"; //Doanctmi
 char server[]          = "blynk-cloud.com";
 unsigned int port      = 8442;
 // Your GPRS credentials
@@ -62,7 +62,6 @@ BLYNK_WRITE(V0) //Send data from app to hardware, hàm chỉ được gọi khi 
                 digitalWrite(STOP_PIN, pinValue);
                 digitalWrite(LED_BLINK, pinValue);
                 delay(300);
-                //Blynk.notify("STOP");
         }
 
         // process received value
@@ -75,7 +74,6 @@ BLYNK_WRITE(V1) //Send data from app to hardware
                 digitalWrite(UP_PIN, pinValue);
                 digitalWrite(LED_BLINK, pinValue);
                 delay(300);
-                //Blynk.notify("LÊN");
         }
         // process received value
 
@@ -88,7 +86,6 @@ BLYNK_WRITE(V2) //Send data from app to hardware
                 digitalWrite(DOWN_PIN, pinValue);
                 digitalWrite(LED_BLINK, pinValue);
                 delay(300);
-                //Blynk.notify("XUỐNG");
         }
 
         // process received value
@@ -100,14 +97,12 @@ BLYNK_WRITE(V3) //Send data from app to hardware
         if (pinValue && Bit_lock==TRUE) {
                 Bit_lock = FALSE; // đổi trạng thái
                 Blynk.virtualWrite(V10, "Không khóa");
-                //Blynk.notify("KHÔNG KHÓA");
                 //digitalWrite(STOP_PIN, 0);
                 //Serial.print("Bit lock:");
                 //Serial.println(Bit_lock);
         } else if (pinValue && Bit_lock==FALSE) {
                 Bit_lock = TRUE;
                 Blynk.virtualWrite(V10, "Khóa");
-                //Blynk.notify("KHÓA");
                 digitalWrite(LED_BLINK, 1);
                 //digitalWrite(STOP_PIN, 1);
                 //Serial.print("Bit lock:");
@@ -171,9 +166,10 @@ void setup()
         // Blynk.connectNetwork(apn, user, pass);
         // Blynk.connect();
 
-        Blynk.begin(auth, modem, apn, user, pass);
-        timer.setInterval(10000L, CheckConnection);
-        Blynk.virtualWrite(V10, "Không khóa");
+        //Blynk.begin(auth, modem, apn, user, pass);
+        timer.setInterval(60000L, CheckConnection);
+        //Blynk.virtualWrite(V10, "Không khóa");
+        Serial.println("OUT SETUP...");
 }
 
 void loop()
@@ -183,12 +179,13 @@ void loop()
         }
         else
         {
+                Serial.println("OUT LOOO.....P!!!!!");
                 // Code for A_CHANNEL
                 int a_rf = digitalRead(A_CHANNEL);
                 if (Bit_lock == 0) {
                         digitalWrite(STOP_PIN, a_rf);
                         digitalWrite(LED_BLINK, a_rf);
-                        delay(50);
+                        delay(120);
                 }
                 else {
                         digitalWrite(STOP_PIN, FALSE);
@@ -198,7 +195,7 @@ void loop()
                 if (Bit_lock == 0) {
                         digitalWrite(UP_PIN, b_rf);
                         digitalWrite(LED_BLINK, b_rf);
-                        delay(50);
+                        delay(120);
                 }
                 else {
                         digitalWrite(UP_PIN, FALSE);
@@ -208,44 +205,12 @@ void loop()
                 if (Bit_lock == 0) {
                         digitalWrite(DOWN_PIN, c_rf);
                         digitalWrite(LED_BLINK, c_rf);
-                        delay(50);
+                        delay(120);
                 }
                 else {
                         digitalWrite(DOWN_PIN, FALSE);
                 }
 
-
-
-                // // Code for HAND_STOP
-                // int h_stop = digitalRead(HAND_STOP);
-                // if (Bit_lock == 0) {
-                //         digitalWrite(STOP_PIN, h_stop);
-                //         digitalWrite(LED_BLINK, h_stop);
-                //         delay(120);
-                // }
-                // else {
-                //         digitalWrite(STOP_PIN, FALSE);
-                // }
-                // // Code for HAND_UP
-                // int h_up = digitalRead(HAND_UP);
-                // if (Bit_lock == 0) {
-                //         digitalWrite(UP_PIN, h_up);
-                //         digitalWrite(LED_BLINK, h_up);
-                //         delay(120);
-                // }
-                // else {
-                //         digitalWrite(UP_PIN, FALSE);
-                // }
-                // // Code for HAND_DOWN
-                // int h_down = digitalRead(HAND_DOWN);
-                // if (Bit_lock == 0) {
-                //         digitalWrite(DOWN_PIN, h_down);
-                //         digitalWrite(LED_BLINK, h_down);
-                //         delay(120);
-                // }
-                // else {
-                //         digitalWrite(DOWN_PIN, FALSE);
-                // }
         }
 
         timer.run();
@@ -255,8 +220,7 @@ void loop()
         if (Bit_lock == 0) {
                 digitalWrite(STOP_PIN, a_rf);
                 digitalWrite(LED_BLINK, a_rf);
-                //Blynk.notify("DỪNG");
-                delay(20);
+                delay(120);
         }
         else {
                 digitalWrite(STOP_PIN, FALSE);
@@ -266,8 +230,7 @@ void loop()
         if (Bit_lock == 0) {
                 digitalWrite(UP_PIN, b_rf);
                 digitalWrite(LED_BLINK, b_rf);
-                //Blynk.notify("CỬA LÊN");
-                delay(20);
+                delay(120);
         }
         else {
                 digitalWrite(UP_PIN, FALSE);
@@ -277,66 +240,12 @@ void loop()
         if (Bit_lock == 0) {
                 digitalWrite(DOWN_PIN, c_rf);
                 digitalWrite(LED_BLINK, c_rf);
-                //Blynk.notify("CỬA XUỐNG");
-                delay(20);
+                delay(120);
         }
         else {
                 digitalWrite(DOWN_PIN, FALSE);
         }
-// Code for D_CHANNEL
-        // int d_rf = digitalRead(D_CHANNEL);
-        // if (d_rf && Bit_lock == TRUE) {
-        //         Bit_lock = FALSE; // đổi trạng thái
-        //         Blynk.virtualWrite(V10, "Không khóa");
-        //         digitalWrite(STOP_PIN, 0);
-        //         ////Serial.print("Bit lock:");
-        //         //  //Serial.println(Bit_lock);
-        // } else if (d_rf == TRUE && Bit_lock == FALSE) {
-        //         Bit_lock = TRUE;
-        //         Blynk.virtualWrite(V10, "Khóa");
-        //         digitalWrite(LED_BLINK, 1);
-        //         digitalWrite(STOP_PIN, 1);
-        //         //Serial.print("Bit lock:");
-        //         //Serial.println(Bit_lock);
-        // }
 
-
-        // // Code for HAND_STOP
-        // int h_stop = digitalRead(HAND_STOP);
-        // if (Bit_lock == 0) {
-        //         digitalWrite(STOP_PIN, h_stop);
-        //         digitalWrite(LED_BLINK, h_stop);
-        //         delay(120);
-        //         Serial.println(h_stop);
-        //
-        // }
-        // else {
-        //         digitalWrite(STOP_PIN, FALSE);
-        // }
-        // // Code for HAND_UP
-        // int h_up = digitalRead(HAND_UP);
-        // if (Bit_lock == 0) {
-        //         digitalWrite(UP_PIN, h_up);
-        //         digitalWrite(LED_BLINK, h_up);
-        //         delay(120);
-        //         Serial.println(h_up);
-        //
-        // }
-        // else {
-        //         digitalWrite(UP_PIN, FALSE);
-        // }
-        // // Code for HAND_DOWN
-        // int h_down = digitalRead(HAND_DOWN);
-        // if (Bit_lock == 0) {
-        //         digitalWrite(DOWN_PIN, h_down);
-        //         digitalWrite(LED_BLINK, h_down);
-        //         delay(120);
-        //         Serial.println(h_down);
-        //
-        // }
-        // else {
-        //         digitalWrite(DOWN_PIN, FALSE);
-        // }
 
 }
 

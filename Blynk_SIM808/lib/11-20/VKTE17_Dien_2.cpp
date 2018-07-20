@@ -21,7 +21,7 @@ void software_Reset();
 
 // You should get Auth Token in the Blynk App.
 // Go to the Project Settings (nut icon).
-char auth[] = "466f00680aad43c5b8ddc406be78307e"; //vkte10
+char auth[] = "150153f6993f4823b2af1780600f51b3"; //vkte16_1
 char server[]          = "blynk-cloud.com";
 unsigned int port      = 8442;
 // Your GPRS credentials
@@ -49,6 +49,9 @@ unsigned int stopseconds_2;
 #define STOP_PIN 6      // Relay số 3
 #define UP_PIN 7        // Relay số 2
 #define DOWN_PIN  8     // Relay số 1
+#define RELAY_4  3     // Relay số 4
+#define RELAY_5  A5     // Relay số 5
+#define RELAY_6  A4     // Relay số 6
 #define LED_BLINK  13
 // #define A_CHANNEL 3
 // #define B_CHANNEL 5
@@ -67,7 +70,7 @@ TinyGsm modem(SerialAT);
 ///////////////Đồng bộ hóa/////////////////////////////////////
 BLYNK_CONNECTED() {
         Blynk.syncAll();
-        Blynk.notify("Đồng bộ hóa");
+        //Blynk.notify("Đồng bộ hóa");
 }
 // Hàm đọc giá trị Virtual PIN V0 viết giá trị lên LED_BLINK
 BLYNK_WRITE(V0) //Send data from app to hardware, hàm chỉ được gọi khi ta bấm nút V0 mà thôi
@@ -75,13 +78,13 @@ BLYNK_WRITE(V0) //Send data from app to hardware, hàm chỉ được gọi khi 
         int pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
         //Serial.println(pinValue);
 
-        digitalWrite(STOP_PIN, pinValue);
+        digitalWrite(DOWN_PIN, pinValue);
         digitalWrite(LED_BLINK, pinValue);
         delay(300);
         if (pinValue == TRUE) {
-                Blynk.notify("Bật thiết bị 3!");
+                Blynk.notify("Bật thiết bị 1!");
         } else {
-                Blynk.notify("Tắt thiết bị 3!");
+                Blynk.notify("Tắt thiết bị 1!");
         }
 
 
@@ -107,16 +110,54 @@ BLYNK_WRITE(V2) //Send data from app to hardware
 {
         int pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
         //Serial.println(pinValue);
-        digitalWrite(DOWN_PIN, pinValue);
+        digitalWrite(STOP_PIN, pinValue);
         digitalWrite(LED_BLINK, pinValue);
         delay(300);
         if (pinValue == TRUE) {
-                Blynk.notify("Bật thiết bị 1!");
+                Blynk.notify("Bật thiết bị 3!");
         } else {
-                Blynk.notify("Tắt thiết bị 1!");
+                Blynk.notify("Tắt thiết bị 3!");
         }
 }
-
+BLYNK_WRITE(V28) //Send data from app to hardware
+{
+        int pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
+        //Serial.println(pinValue);
+        digitalWrite(RELAY_4, pinValue);
+        digitalWrite(LED_BLINK, pinValue);
+        delay(300);
+        if (pinValue == TRUE) {
+                Blynk.notify("Bật thiết bị 4!");
+        } else {
+                Blynk.notify("Tắt thiết bị 4!");
+        }
+}
+BLYNK_WRITE(V29) //Send data from app to hardware
+{
+        int pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
+        //Serial.println(pinValue);
+        digitalWrite(RELAY_5, pinValue);
+        digitalWrite(LED_BLINK, pinValue);
+        delay(300);
+        if (pinValue == TRUE) {
+                Blynk.notify("Bật thiết bị 5!");
+        } else {
+                Blynk.notify("Tắt thiết bị 5!");
+        }
+}
+BLYNK_WRITE(V30) //Send data from app to hardware
+{
+        int pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
+        //Serial.println(pinValue);
+        digitalWrite(RELAY_6, pinValue);
+        digitalWrite(LED_BLINK, pinValue);
+        delay(300);
+        if (pinValue == TRUE) {
+                Blynk.notify("Bật thiết bị 6!");
+        } else {
+                Blynk.notify("Tắt thiết bị 6!");
+        }
+}
 BLYNK_WRITE(V4) //Bit_Timer
 {
         bool pinValue = param.asInt(); // assigning incoming value from pin V4 to a variable
@@ -242,6 +283,10 @@ void setup()
         pinMode(STOP_PIN, OUTPUT);
         pinMode(UP_PIN, OUTPUT);
         pinMode(DOWN_PIN, OUTPUT);
+        pinMode(RELAY_4, OUTPUT);
+        pinMode(RELAY_5, OUTPUT);
+        pinMode(RELAY_6, OUTPUT);
+
         pinMode(LED_BLINK, OUTPUT);
 
         // pinMode(A_CHANNEL, INPUT);
@@ -273,7 +318,7 @@ void setup()
 
         Blynk.begin(auth, modem, apn, user, pass);
         rtc.begin();
-        timer.setInterval(5000L, CheckConnection);
+        timer.setInterval(60000L, CheckConnection);
         timer.setInterval(3600000L, clockDisplay);
         timer.setInterval(30000L, activetoday);
         //Blynk.virtualWrite(V10, "Không khóa");

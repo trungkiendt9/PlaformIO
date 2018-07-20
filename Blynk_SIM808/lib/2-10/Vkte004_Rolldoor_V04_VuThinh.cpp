@@ -1,8 +1,10 @@
 
-//#define BLYNK_PRINT Serial
+
+#define BLYNK_PRINT Serial
 
 // Select your modem:
 #define TINY_GSM_MODEM_SIM800
+// #define BLYNK_TIMEOUT_MS 5000
 //#define TINY_GSM_MODEM_SIM900
 //#define TINY_GSM_MODEM_M590
 //#define TINY_GSM_MODEM_A6
@@ -121,6 +123,8 @@ void CheckConnection() {   // check every 11s if connected to Blynk server
                 //Blynk.connect(10000);
                 //software_Reset();
                 Blynk.begin(auth, modem, apn, user, pass);
+                // config(gsm, auth, domain, port);
+                // connectNetwork(apn, user, pass);
         }
         else {
                 //Serial.println("Da ket noi Blynk server");
@@ -166,9 +170,11 @@ void setup()
         // Blynk.connectNetwork(apn, user, pass);
         // Blynk.connect();
 
-        Blynk.begin(auth, modem, apn, user, pass);
+        //Blynk.begin(auth, modem, apn, user, pass);
+        //Blynk.begin(auth, modem, apn, user, pass);
         timer.setInterval(180000L, CheckConnection);
-        Blynk.virtualWrite(V10, "Không khóa");
+        //Blynk.virtualWrite(V10, "Không khóa");
+        Serial.println("OUT SETUP...");
 }
 
 void loop()
@@ -178,6 +184,7 @@ void loop()
         }
         else
         {
+                Serial.println("OUT LOOO.....P!!!!!");
                 // Code for A_CHANNEL
                 int a_rf = digitalRead(A_CHANNEL);
                 if (Bit_lock == 0) {
