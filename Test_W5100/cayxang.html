@@ -1,0 +1,126 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head><title>EDSPDC</title><link href="/eds.css" rel="stylesheet" type="text/css" />
+        <script src="/eds.js" type="text/javascript"></script></head>
+    <body><div id="shadow-one"><div id="shadow-two"><div id="shadow-three"><div id="shadow-four"><div id="page">
+                <div style="padding:0px 0px 5px 5px;"><img src="/atel.gif" alt="ATEL" /></div>
+                <div id="title"><div class="right">EDS - PETROL PUMPS & DISPENSERS</div><span id="hello">&nbsp;</span></div>
+                <div id="menu">
+                    <a href="/index.htm">So lieu cap phat</a>
+                    <a href="/pumset.htm">Cai dat cap phat</a>
+                    <a href="/genset.htm">Cai dat chung</a>
+                    <a href="/skset.htm">Dat phim nhanh</a>
+                    <a href="/itfset.htm">Ket noi ngoai vi</a>
+                    <a href="/upload.htm">Cau hinh may</a>
+                    <a href="/dyndns/index.htm">Cau hinh DDNS</a>
+                    <a href="/protect/config.htm">Cau hinh mang</a>
+                    <a href="/mpfsupload">Tai web image</a></div>
+<div id="content"><h1>So lieu cap phat</h1>
+      <div id="loading" style="display:none"><b>Error:</b><br />Connection to demo board was lost.</div>
+    <div id="display"><fieldset>
+            <div><label>Tien:</label><td><span id="pumdat_cash" style="font-weight:normal">?</span></td><td> VNĐ</td></div>
+            <div><label>Lit:</label><td><span id="pumdat_lit" style="font-weight:normal">?</span></td><td> ML</td></div>
+            <div><label>Don gia:</label><td><span id="pumset_price" style="font-weight:normal">?</span></td><td> VNĐ</td></div>
+            <div><label>Ngay gio bom:</label><td><span id="pumdat_pump_time" style="font-weight:normal">?</span></td><td> GMT+7</td></div>
+            <div><label>Ngay gio may:</label><td><span id="genset_time" style="font-weight:normal">?</span></td><td> GMT+7</td></div>
+            <div><label>Ngay gio mang:</label><td><span id="network_time" style="font-weight:normal">?</span></td></div>
+            <div><label>Tong tich luy:</label><td><span id="pumdat_elt" style="font-weight:normal">?</span></td><td> ML</td></div>
+            <div><label>Tong ca - lit:</label><td><span id="pumdat_dlt" style="font-weight:normal">?</span></td><td> ML</td></div>
+            <div><label>Tong ca - tien:</label><td><span id="pumdat_dct" style="font-weight:normal">?</span></td><td> VNĐ</td></div>
+            <div><label>Tong ca - tron:</label><td><span id="pumdat_drt" style="font-weight:normal">?</span></td><td> VNĐ</td></div>
+            <div><label>Dat ban phim:</label><td><span id="pumdat_prs" style="font-weight:normal">?</span></td><td> ML/VNĐ</td></div></fieldset> </div>
+    <form method="get" action="index.htm" name="pumctr"><fieldset>
+            <div><label>Bom dat Lit/Tien:</label>
+                <input type="text" name="pumset_prs" value="   157100" style="width:96px" /> &nbsp;
+                <td><span class="control" id="mlvnd" style="font-weight:normal">?</span></td> &nbsp;
+                <td><span class="control" id="control0" style="font-weight:bold">OPERATION</span></td> &nbsp;
+                <td><span class="control" id="control1" style="font-weight:bold">ALARM</span></td></div>
+            <div><label>Bom Dat/Tron:</label><span class="control">
+                <input type="submit" id="control2" name="control2" value="Lit" style="min-width:100px"
+                    onclick="newAJAXCommand('control.cgi?control=2');" /> &nbsp;
+                <input type="submit" id="control3" name="control3" value="Tien" style="min-width:100px"
+                    onclick="newAJAXCommand('control.cgi?control=3');" /></span></div>
+            <div><label>Tam dung bom:</label><span class="control">
+                <input type="button" id="control4" name="control4" value="Bom/Dung" style="min-width:214px"
+                    onclick="newAJAXCommand('control.cgi?control=4');" /> &nbsp;</span></div>
+            <div><label>Tat/Bat bom:</label><span class="control">
+                <input type="button" id="control5" name="control5" value="Bat/Tat" style="min-width:214px"
+                    onclick="newAJAXCommand('control.cgi?control=5');" /></span></div>
+            <div><label>May in:</label><span class="control">
+                <input type="button" id="control6" name="control6" value="In hoa don" style="min-width:100px"
+                    onclick="newAJAXCommand('control.cgi?control=6');" /> &nbsp;
+                <input type="button" id="control7" name="control7" value="In so tong" style="min-width:100px"
+                    onclick="newAJAXCommand('control.cgi?control=7');" /></span></div></fieldset></form>
+    <form method="get" action="index.htm" name="pumdat"><fieldset>
+            <div><label>Lan bom gan so:</label>
+                <input type="text" name="pumdat_rcd" value=" 1" style="width:96px" /> &nbsp;
+                <input type="submit" class="sm" name="pumctr_rcd_sm" value="Goi" style="min-width:100px" /></div>
+            <div><label>Tien:</label><td>   157100</td><td> VNĐ</td></div>
+            <div><label>Lit:</label><td>    10000</td><td> ML</td></div>
+            <div><label>Don gia:</label><td> 15710</td><td> VNĐ</td></div>
+            <div><label>Ngay gio bom:</label><td>18/03/30, 16:35.27</td><td> GMT+7</td></div>
+            <div><label>May in:</label><span class="control">
+                <input type="button" id="control8" name="control8" value="In lai hoa don" style="min-width:100px"
+                    onclick="newAJAXCommand('control.cgi?control=8');" /></span></div></fieldset></form>
+    <form method="get" action="index.htm" name="pumcdt"><fieldset>
+            <div><label>Xoa so lieu:</label>
+                <select name="pumdat_cdt">
+                    <option value="0" selected>Tong ca</option>
+                    <option value="1" >So lieu bom</option>
+                    <option value="2" >Toan bo</option></select> &nbsp;
+                <input type="submit" class="sm" name="pumctr_cdt_sm" value="Xoa" style="min-width:100px" /></div> </fieldset></form></div>
+<script language="javascript" type="text/javascript">
+    <!--
+    function updateStatus(xmlData) {
+          var mainstat = document.getElementById('display').style.display;
+          var loadstat = document.getElementById('loading').style.display;
+          if(!xmlData) {
+                mainstat = 'none';
+                loadstat = 'inline';
+                return; }
+          mainstat = 'inline';
+          loadstat = 'none';
+          document.getElementById('pumdat_cash').innerHTML = getXMLValue(xmlData, 'pumdat_cash');
+          document.getElementById('pumdat_lit').innerHTML = getXMLValue(xmlData, 'pumdat_lit');
+          document.getElementById('pumset_price').innerHTML = getXMLValue(xmlData, 'pumset_price');
+          document.getElementById('pumdat_elt').innerHTML = getXMLValue(xmlData, 'pumdat_elt');
+          document.getElementById('pumdat_dlt').innerHTML = getXMLValue(xmlData, 'pumdat_dlt');
+          document.getElementById('pumdat_dct').innerHTML = getXMLValue(xmlData, 'pumdat_dct');
+          document.getElementById('pumdat_drt').innerHTML = getXMLValue(xmlData, 'pumdat_drt');
+          document.getElementById('pumdat_pump_time').innerHTML = getXMLValue(xmlData, 'pumdat_pump_time');
+          document.getElementById('genset_time').innerHTML = getXMLValue(xmlData, 'genset_time');
+          document.getElementById('network_time').innerHTML = Date();
+          document.getElementById('pumdat_prs').innerHTML = getXMLValue(xmlData, 'pumdat_prs');
+          if (getXMLValue(xmlData, 'control2') == '1')
+              LitCash = 'ML';
+          else if (getXMLValue(xmlData, 'control3') == '1')
+              LitCash = 'VNĐ';
+          else
+              LitCash = 'ML/VNĐ';
+          document.getElementById('mlvnd').innerHTML = LitCash;
+          document.getElementById('control0').style.color = (getXMLValue(xmlData, 'control0') == '1') ? 'green' : 'black';
+          document.getElementById('control1').style.color = (getXMLValue(xmlData, 'control1') == '1') ? 'yellow' : 'black';
+          document.getElementById('control2').style.color = (getXMLValue(xmlData, 'control2') == '1') ? 'red' : 'black';
+          document.getElementById('control3').style.color = (getXMLValue(xmlData, 'control3') == '1') ? 'red' : 'black';
+          document.getElementById('control4').style.color = (getXMLValue(xmlData, 'control4') == '1') ? 'red' : 'black';
+          document.getElementById('control5').style.color = (getXMLValue(xmlData, 'control5') == '1') ? 'red' : 'black';
+          document.getElementById('control4').value = (getXMLValue(xmlData, 'control4') == '1') ? 'May dung bom, Bom tiep ?' : 'Dung bom ?';
+          document.getElementById('control5').value = (getXMLValue(xmlData, 'control5') == '1') ? 'May dang bom, Tat bom ?' : 'May tat bom, Bat bom ?';
+    }
+    setTimeout("newAJAXCommand('status.xml', updateStatus, true)",500);
+    //-->
+</script>
+<script language="javascript" type="text/javascript">
+    <!--
+    document.getElementById('hello').innerHTML = "";
+    //-->
+</script>
+                <div class="spacer">&nbsp;</div>
+                <div id="footer"><b>Copyright &copy; 2018 ATEL Technology, Inc.</b>
+                    <td><b>Image Version:</b></td><td>&nbsp;</td><td><b>1.0</b></td>
+                    <td><b>Image Date:</b></td><td>&nbsp;</td><td><b>February 21, 2018</b></td></div></div>
+        </div></div></div></div>
+    </body>
+</html>

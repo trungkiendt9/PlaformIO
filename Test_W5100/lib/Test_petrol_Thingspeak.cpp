@@ -40,12 +40,12 @@ EthernetClient client;
 ////////////////////////// KHAI BÁO CÁC BIẾN TOÀN CỤC/////////////////////////
 //byte ip[] = { 192,168,0,112 }; // Địa chỉ IP nếu không nhận được từ DCHP
 //byte ip[] = { 192,168,1,112 }; // Địa chỉ IP nếu không nhận được từ DCHP
-byte ip[] = {192,168,1,11}; // Địa chỉ IP nếu không nhận được từ DCHP VKTECH
-char serverName[] = "dantri.com.vn";
+byte ip[] = {192,168,68,121}; // Địa chỉ IP nếu không nhận được từ DCHP VKTECH
+char serverName[] = "192.168.68.120"; // Địa chỉ IP của Petrol
 // char serverName[] = "192.168.1.10";
 unsigned long myChannelNumber = 416101;   // Kênh trên Thingspeak
 const char * myWriteAPIKey = "DBSNZ86I2E0DSYKH"; // Mã cho phép ghi trên kênh
-unsigned long interval = 10000; // CHU KỲ THỜI GIAN LẤY MẪU ĐỌC CÂY XĂNG
+unsigned long interval = 30000; // CHU KỲ THỜI GIAN LẤY MẪU ĐỌC CÂY XĂNG
 unsigned long previousMillis = 0; // millis() trả về số unsigned long. cho Đa nhiệm 1
 long Tien;
 long MilLit;
@@ -55,7 +55,7 @@ void TruyXuatServer();
 void TrichTien();
 void TrichLit();
 void TrichDonGia();
-void TrichDanTri();
+// void TrichDanTri();
 void setup()
 {
         Serial.begin(9600);
@@ -84,25 +84,28 @@ void loop()
                 delay(400);
 //////////////////////////////Trích xuất thông tin////////////////////////////
                 if (client.connected()) {
-                        // TrichTien();
-                        // TrichLit();
-                        // TrichDonGia();
-                        TrichDanTri();
+                        TrichTien();
+                        TrichLit();
+                        TrichDonGia();
+                        //TrichDanTri();
                         //client.stop();
-                        //delay(60000); // check again in 10 seconds
+                        // delay(5000); // check again in 10 seconds
                 }
                 else {
-                        //Serial.printl();
-                        //Serial.print(".");
-                        // client.stop();
-                        // delay(1000);
+                        Serial.println();
+                        Serial.print(".");
+                        client.stop();
+                        delay(1000);
                 }
 //////////////////////////////Gửi data lên Cloud/////////////////////////////
-                ThingSpeak.setField(1,(long) Tien);
-                ThingSpeak.setField(2,(long) MilLit);
-                ThingSpeak.setField(3,(long) DonGia);
-                ThingSpeak.writeFields(myChannelNumber, myWriteAPIKey);
-                Serial.println("Updated to thingspeak" );
+                // ThingSpeak.setField(1,(long) Tien);
+                // ThingSpeak.setField(2,200);
+                // ThingSpeak.setField(3,(long) DonGia);
+                // ThingSpeak.writeFields(myChannelNumber, myWriteAPIKey);
+                ThingSpeak.writeField(myChannelNumber, 1, 400, myWriteAPIKey);
+                delay(20000);
+                Serial.println("Sent update to thingspeak" );
+
                 previousMillis = millis();
         }
 
@@ -113,14 +116,15 @@ void loop()
 //1.Hàm truy xuất server
 void TruyXuatServer()
 {
+        client.stop();
         if (client.connect(serverName, 80)>0) {
                 Serial.print("connected... ");
-                client.println("GET /suc-manh-so.htm HTTP/1.1"); //http://192.168.1.1/status.htm HTTP/1.1 206 Partial Content
-                // client.println("GET /index.htm HTTP/1.1"); //http://192.168.1.1/status.htm HTTP/1.1 206 Partial Content
-                // client.println("Authorization: Basic YWRtaW46YWRtaW4=");
+                // client.println("GET /suc-manh-so.htm HTTP/1.1"); //http://192.168.1.1/status.htm HTTP/1.1 206 Partial Content
+                client.println("GET /index.htm HTTP/1.1"); //http://192.168.1.1/status.htm HTTP/1.1 206 Partial Content
+                client.println("Authorization: Basic YWRtaW46YWRtaW4=");
                 //client.println("Authorization: Bearer d815648beb04c5cac074c3c22085c23cffde59e6");
-                client.println("Host: dantri.com.vn");
-                // client.println("Host: 192.168.1.10");
+                // client.println("Host: dantri.com.vn");
+                client.println("Host: 192.168.68.120");
                 //client.println("Range: bytes=0-1024");
                 client.println("User-Agent: arduino-ethernet");
                 client.println("Connection: close");
@@ -185,20 +189,20 @@ void TrichDonGia()
         }
 }
 //5. Hàm trích xuất Test từ server Dantri.com.vn
-void TrichDanTri()
-{
-        if(client.find("value=\"2/2/201")) {
-                //if(client.find("<div><label>Tien:</label><td>       ")) {
-                //int Lit; // Kết quả mà trích xuất được
-                if(client.find("8")) {
-                        DonGia = client.parseInt(SKIP_WHITESPACE,'\x01');
-                        Serial.print("Test Dân Trí:" );
-                        Serial.print(DonGia);
-                        Serial.print(" được tìm thấy");
-                        Serial.println();
-                }
-        }
-        else {
-                Serial.println("Dân Trí not found");
-        }
-}
+// void TrichDanTri()
+// {
+//         if(client.find("value=\"2/2/201")) {
+//                 //if(client.find("<div><label>Tien:</label><td>       ")) {
+//                 //int Lit; // Kết quả mà trích xuất được
+//                 if(client.find("8")) {
+//                         DonGia = client.parseInt(SKIP_WHITESPACE,'\x01');
+//                         Serial.print("Test Dân Trí:" );
+//                         Serial.print(DonGia);
+//                         Serial.print(" được tìm thấy");
+//                         Serial.println();
+//                 }
+//         }
+//         else {
+//                 Serial.println("Dân Trí not found");
+//         }
+// }

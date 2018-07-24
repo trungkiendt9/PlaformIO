@@ -32,7 +32,7 @@ byte mac[] = {
 };
 // fill in an available IP address on your network here,
 // for manual configuration:
-IPAddress ip(192, 168, 1, 177);
+IPAddress ip(192, 168, 1, 121);
 
 // fill in your Domain Name Server address here:
 //IPAddress myDns(1, 1, 1, 1);
@@ -40,11 +40,11 @@ IPAddress ip(192, 168, 1, 177);
 // initialize the library instance:
 EthernetClient client;
 
-char server[] = "192.168.1.10";
+char server[] = "192.168.68.120"; // Ip của Petrol
 //IPAddress server(64,131,82,241);
 unsigned long IndexOfChar;
 unsigned long lastConnectionTime = 0;             // last time you connected to the server, in milliseconds
-const unsigned long postingInterval = 120L * 1000L; // delay between updates, in milliseconds
+const unsigned long postingInterval = 5L * 1000L; // delay between updates, in milliseconds
 // the "L" is needed to use long type numbers
 //char MangHtml[3200];
 void httpRequest();
@@ -146,7 +146,7 @@ void httpRequest() {
                 // send the HTTP GET request:
                 client.println("GET /index.htm HTTP/1.1"); //http://192.168.1.10/status.htm HTTP/1.1 206 Partial Content
                 client.println("Authorization: Basic YWRtaW46YWRtaW4=");
-                client.println("Host: 192.168.1.10");
+                client.println("Host: 192.168.68.120");
                 //client.println("Range: bytes=5100-6100");
                 client.println("User-Agent: arduino-ethernet");
                 client.println("Connection: close");
