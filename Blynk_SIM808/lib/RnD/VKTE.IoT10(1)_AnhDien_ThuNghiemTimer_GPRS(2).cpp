@@ -1,11 +1,4 @@
-/* ThuNghiemTimer_GPRS(2)
-  Thử rút gọn clean chương trình
-  Timer chạy liên tục trong khoảng thời gian cài đặt, vẫn chạy khi khởi động lại
-  Vẫn còn lỗi báo Timer liên tục
-
-
-
-*/
+// ThuNghiemTimer_GPRS(2) -- Thử rút gọn clean chương trình - OK
 // #define BLYNK_PRINT Serial
 
 // Select your modem:
@@ -27,7 +20,8 @@
 // You should get Auth Token in the Blynk App.
 // Go to the Project Settings (nut icon).
 // char auth[] = "5dace783f8664ac9b28b3b715d76afad"; // doanctmi
-char auth[] = "f7af72bda29d494fbf24371d833089b7"; // doanctmi2
+// char auth[] = "f7af72bda29d494fbf24371d833089b7"; // doanctmi2
+char auth[] = "c882ce31321d462482df7237bb3f7bf6"; // vkte10(1)
 // char server[]          = "blynk-cloud.com";
 // unsigned int port      = 8442;
 // Your GPRS credentials
@@ -36,13 +30,13 @@ char apn[]  = "v-internet";
 char user[] = "";
 char pass[] = "";
 // Khai báo các biến toàn cục #9A12B3 #F660AB
-// #define BLYNK_GREEN     "#23C48E"
-// #define BLYNK_BLUE      "#04C0F8"
-// #define BLYNK_YELLOW    "#ED9D00"
-// #define BLYNK_RED       "#FF5733"
-// #define BLYNK_DARK_BLUE "#5F7CD8"
-// #define BLYNK_CYAN      "#9A12B3"
-// #define BLYNK_PINK      "#F660AB"
+#define BLYNK_GREEN     "#23C48E"
+#define BLYNK_BLUE      "#04C0F8"
+#define BLYNK_YELLOW    "#ED9D00"
+#define BLYNK_RED       "#FF5733"
+#define BLYNK_DARK_BLUE "#5F7CD8"
+#define BLYNK_CYAN      "#9A12B3"
+#define BLYNK_PINK      "#F660AB"
 
 
 
@@ -110,19 +104,7 @@ void software_Reset() // Restarts program from beginning but does not reset the 
         asm volatile ("jmp 0");
 }
 // Chuyển trạng thái Relay và đèn Led
-void Set_Pin(uint8_t pinNumber, uint8_t pinValue, bool FirstTrigger, uint8_t CHANNEL){
-        digitalWrite(pinNumber, pinValue);
-        digitalWrite(LED_BLINK, pinValue);
-        if (pinValue == TRUE && FirstTrigger == FALSE) {
-                Blynk.notify(String("Bật kênh ") + CHANNEL + "!");
-                FirstTrigger = TRUE;
-        } else if (pinValue == FALSE) {
-                Blynk.notify(String("Tắt kênh ") + CHANNEL + "!");
-                FirstTrigger = FALSE;
-        }
-}
-// Chuyển trạng thái Relay và đèn Led
-void Set_Pin_timer(uint8_t pinNumber, uint8_t pinValue){
+void Set_Pin(uint8_t pinNumber, uint8_t pinValue){
         digitalWrite(pinNumber, pinValue);
         digitalWrite(LED_BLINK, pinValue);
 }
@@ -150,42 +132,90 @@ BLYNK_WRITE(V1) //Send data from app to hardware
         // Blynk.setProperty(V1, "color", BLYNK_RED);
         // Blynk.setProperty(V1, "label", "Kênh 1");
         uint8_t pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
-        Set_Pin(DOWN_PIN, pinValue, FirstTrigger_1, 1);
+        //Serial.println(pinValue);
+        Set_Pin(DOWN_PIN, pinValue);
+        if (pinValue == TRUE && FirstTrigger_1 == FALSE) {
+                Blynk.notify("Bật kênh 1!");
+                FirstTrigger_1 = TRUE;
+        } else if (pinValue == FALSE) {
+                Blynk.notify("Tắt kênh 1!");
+                FirstTrigger_1 = FALSE;
+        }
 }
 BLYNK_WRITE(V2) //Send data from app to hardware
 {
         // Blynk.setProperty(V2, "color", BLYNK_BLUE);
         // Blynk.setProperty(V2, "label", "Kênh 2");
         uint8_t pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
-        Set_Pin(UP_PIN, pinValue, FirstTrigger_2, 2);
+        //Serial.println(pinValue);
+        Set_Pin(UP_PIN, pinValue);
+        if (pinValue == TRUE && FirstTrigger_2 == FALSE) {
+                Blynk.notify("Bật kênh 2!");
+                FirstTrigger_2 = TRUE;
+        } else if (pinValue == FALSE) {
+                Blynk.notify("Tắt kênh 2!");
+                FirstTrigger_2 = FALSE;
+        }
 }
 BLYNK_WRITE(V3) //Send data from app to hardware
 {
         // Blynk.setProperty(V3, "color", BLYNK_YELLOW);
         // Blynk.setProperty(V3, "label", "Kênh 3");
         uint8_t pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
-        Set_Pin(STOP_PIN, pinValue, FirstTrigger_3, 3);
+        //Serial.println(pinValue);
+        Set_Pin(STOP_PIN, pinValue);
+        if (pinValue == TRUE && FirstTrigger_3 == FALSE) {
+                Blynk.notify("Bật kênh 3!");
+                FirstTrigger_3 = TRUE;
+        } else if (pinValue == FALSE) {
+                Blynk.notify("Tắt kênh 3!");
+                FirstTrigger_3 = FALSE;
+        }
 }
 BLYNK_WRITE(V4) //Send data from app to hardware
 {
         // Blynk.setProperty(V4, "color", BLYNK_GREEN);
         // Blynk.setProperty(V4, "label", "Kênh 4");
         uint8_t pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
-        Set_Pin(RELAY_4, pinValue, FirstTrigger_4, 4);
+        //Serial.println(pinValue);
+        Set_Pin(RELAY_4, pinValue);
+        if (pinValue == TRUE && FirstTrigger_4 == FALSE) {
+                Blynk.notify("Bật kênh 4!");
+                FirstTrigger_4 = TRUE;
+        } else if (pinValue == FALSE) {
+                Blynk.notify("Tắt kênh 4!");
+                FirstTrigger_4 = FALSE;
+        }
 }
 BLYNK_WRITE(V5) //Send data from app to hardware
 {
         // Blynk.setProperty(V5, "color", BLYNK_PINK);
         // Blynk.setProperty(V5, "label", "Kênh 5");
         uint8_t pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
-        Set_Pin(RELAY_5, pinValue, FirstTrigger_5, 5);
+        //Serial.println(pinValue);
+        Set_Pin(RELAY_5, pinValue);
+        if (pinValue == TRUE && FirstTrigger_5 == FALSE) {
+                Blynk.notify("Bật kênh 5!");
+                FirstTrigger_5 = TRUE;
+        } else if (pinValue == FALSE) {
+                Blynk.notify("Tắt kênh 5!");
+                FirstTrigger_5 = FALSE;
+        }
 }
 BLYNK_WRITE(V6) //Send data from app to hardware
 {
         // Blynk.setProperty(V6, "color", BLYNK_CYAN);
         // Blynk.setProperty(V6, "label", "Kênh 6");
         uint8_t pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
-        Set_Pin(RELAY_6, pinValue, FirstTrigger_6, 6);
+        //Serial.println(pinValue);
+        Set_Pin(RELAY_6, pinValue);
+        if (pinValue == TRUE && FirstTrigger_6 == FALSE) {
+                Blynk.notify("Bật kênh 6!");
+                FirstTrigger_6 = TRUE;
+        } else if (pinValue == FALSE) {
+                Blynk.notify("Tắt kênh 6!");
+                FirstTrigger_6 = FALSE;
+        }
 }
 BLYNK_WRITE(V7) //Bit_Timer
 {
@@ -227,6 +257,7 @@ BLYNK_WRITE(V11) {   // Scheduler #1 Time Input widget
         stopseconds = (t.getStopHour() * 3600) + (t.getStopMinute() * 60);
         // Tính thời gian chạy Timer delta_time_1
         delta_time_1 = DeltaTimer(startseconds, stopseconds);
+        //Serial.println("Thực hiện Time Input 1 ");
 }
 // // Scheduler #2 Time Input widget
 BLYNK_WRITE(V12) {   // Scheduler #2 Time Input widget
@@ -237,6 +268,7 @@ BLYNK_WRITE(V12) {   // Scheduler #2 Time Input widget
         stopseconds_2 = (t2.getStopHour() * 3600) + (t2.getStopMinute() * 60);
         // Tính thời gian chạy Timer delta_time_2
         delta_time_2 = DeltaTimer(startseconds_2, stopseconds_2);
+        //Serial.println("Thực hiện Time Input 2");
 }
 // // Scheduler #3 Time Input widget
 BLYNK_WRITE(V13) {   // Scheduler #3 Time Input widget
@@ -247,6 +279,7 @@ BLYNK_WRITE(V13) {   // Scheduler #3 Time Input widget
         stopseconds_3 = (t3.getStopHour() * 3600) + (t3.getStopMinute() * 60);
         // Tính thời gian chạy Timer delta_time_3
         delta_time_3 = DeltaTimer(startseconds_3, stopseconds_3);
+        //Serial.println("Thực hiện Time Input 3");
 }
 // // Scheduler #4 Time Input widget
 BLYNK_WRITE(V14) {   // Scheduler #4 Time Input widget
@@ -257,6 +290,7 @@ BLYNK_WRITE(V14) {   // Scheduler #4 Time Input widget
         stopseconds_4 = (t4.getStopHour() * 3600) + (t4.getStopMinute() * 60);
         // Tính thời gian chạy Timer delta_time_4
         delta_time_4 = DeltaTimer(startseconds_4, stopseconds_4);
+        //Serial.println("Thực hiện Time Input 4");
 }
 
 // Lập trình cho Timer 1
@@ -273,13 +307,13 @@ void activetoday(){         // check if schedule #1 or #2 should run today
 
         // Điều kiện cho Timer 1
         if(nowseconds >= startseconds  && nowseconds <= startseconds + delta_time_1  && Bit_Timer == TRUE) {                   // 62s on 60s timer ensures 1 trigger command is sent
-                Set_Pin_timer(DOWN_PIN, 1);
+                Set_Pin(DOWN_PIN, 1);
                 Blynk.virtualWrite(V1, 1);
                 Blynk.syncVirtual(V1);
                 //Serial.println("Schedule 1 ..................started");
         }
         if(nowseconds >= stopseconds && nowseconds <= stopseconds + 20 && Bit_Timer == TRUE ) {         // 62s on 60s timer ensures 1 trigger command is sent
-                Set_Pin_timer(DOWN_PIN, 0);         // turn OFF virtual LED
+                Set_Pin(DOWN_PIN, 0);         // turn OFF virtual LED
                 Blynk.virtualWrite(V1, 0);
                 FirstTrigger_1 = FALSE;
                 Blynk.notify("Tắt kênh 1!");
@@ -287,13 +321,13 @@ void activetoday(){         // check if schedule #1 or #2 should run today
         }
         // //Điều kiện cho Timer 2
         if(nowseconds >= startseconds_2  && nowseconds <= startseconds_2 + delta_time_2  && Bit_Timer_2 == TRUE) {                   // 62s on 60s timer ensures 1 trigger command is sent
-                Set_Pin_timer(UP_PIN, 1);         // turn on virtual LED
+                Set_Pin(UP_PIN, 1);         // turn on virtual LED
                 Blynk.virtualWrite(V2, 1);
                 Blynk.syncVirtual(V2);
                 //Serial.println("Schedule 2 ..................started");
         }
         if(nowseconds >= stopseconds_2 && nowseconds <= stopseconds_2 + 20 && Bit_Timer_2 == TRUE ) {         // 62s on 60s timer ensures 1 trigger command is sent
-                Set_Pin_timer(UP_PIN, 0);         // turn OFF virtual LED
+                Set_Pin(UP_PIN, 0);         // turn OFF virtual LED
                 Blynk.virtualWrite(V2, 0);
                 FirstTrigger_2 = FALSE;
                 Blynk.notify("Tắt kênh 2!");
@@ -301,13 +335,13 @@ void activetoday(){         // check if schedule #1 or #2 should run today
         }
         // //Điều kiện cho Timer 3
         if(nowseconds >= startseconds_3  && nowseconds <= startseconds_3 + delta_time_3  && Bit_Timer_3 == TRUE) {                   // 62s on 60s timer ensures 1 trigger command is sent
-                Set_Pin_timer(STOP_PIN, 1);         // turn on virtual LED
+                Set_Pin(STOP_PIN, 1);         // turn on virtual LED
                 Blynk.virtualWrite(V3, 1);
                 Blynk.syncVirtual(V3);
                 //Serial.println("Schedule 3 ..................started");
         }
         if(nowseconds >= stopseconds_3 && nowseconds <= stopseconds_3 + 20 && Bit_Timer_3 == TRUE ) {         // 62s on 60s timer ensures 1 trigger command is sent
-                Set_Pin_timer(STOP_PIN, 0);         // turn OFF virtual LED
+                Set_Pin(STOP_PIN, 0);         // turn OFF virtual LED
                 Blynk.virtualWrite(V3, 0);
                 FirstTrigger_3 = FALSE;
                 Blynk.notify("Tắt kênh 3!");
@@ -315,13 +349,13 @@ void activetoday(){         // check if schedule #1 or #2 should run today
         }
         // //Điều kiện cho Timer 4
         if(nowseconds >= startseconds_4  && nowseconds <= startseconds_4 + delta_time_4  && Bit_Timer_4 == TRUE) {                   // 62s on 60s timer ensures 1 trigger command is sent
-                Set_Pin_timer(RELAY_4, 1);         // turn on virtual LED
+                Set_Pin(RELAY_4, 1);         // turn on virtual LED
                 Blynk.virtualWrite(V4, 1);
                 Blynk.syncVirtual(V4);
                 //Serial.println("Schedule 4 ..................started");
         }
         if(nowseconds >= stopseconds_4 && nowseconds <= stopseconds_4 + 20 && Bit_Timer_4 == TRUE ) {         // 62s on 60s timer ensures 1 trigger command is sent
-                Set_Pin_timer(RELAY_4, 0);         // turn OFF virtual LED
+                Set_Pin(RELAY_4, 0);         // turn OFF virtual LED
                 Blynk.virtualWrite(V4, 0);
                 FirstTrigger_4 = FALSE;
                 Blynk.notify("Tắt kênh 4!");

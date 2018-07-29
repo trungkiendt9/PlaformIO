@@ -37,12 +37,12 @@ char currentTime[9];
 char currentDate[11];
 // long startTimeInSecs;
 // long stopTimeInSecs;
-unsigned int nowseconds;
-unsigned int startseconds;
-unsigned int stopseconds;
-// unsigned int nowseconds_2;
-unsigned int startseconds_2;
-unsigned int stopseconds_2;
+uint32_t nowseconds;
+uint32_t startseconds;
+uint32_t stopseconds;
+// uint32_t nowseconds_2;
+uint32_t startseconds_2;
+uint32_t stopseconds_2;
 // Hardware Serial on Mega, Leonardo, Micro
 // #define SerialAT Serial1
 // Chân chức năng trên arduino
