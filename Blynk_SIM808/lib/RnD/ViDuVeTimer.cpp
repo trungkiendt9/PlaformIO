@@ -18,6 +18,9 @@
 *
 * Time Input widget on V10 (Up to you)
 * Button selection for Time Input (Up to you) on V11
+
+
+https://community.blynk.cc/t/connection-management-rtc-and-sync/5146
 *
 **************************************************************/
 

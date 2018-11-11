@@ -37,12 +37,12 @@ char currentTime[9];
 char currentDate[11];
 // long startTimeInSecs;
 // long stopTimeInSecs;
-unsigned long nowseconds;
-unsigned long startseconds;
-unsigned long stopseconds;
-// unsigned long nowseconds_2;
-unsigned long startseconds_2;
-unsigned long stopseconds_2;
+long nowseconds;
+long startseconds;
+long stopseconds;
+// long nowseconds_2;
+long startseconds_2;
+long stopseconds_2;
 // Hardware Serial on Mega, Leonardo, Micro
 // #define SerialAT Serial1
 // Chân chức năng trên arduino
@@ -179,44 +179,20 @@ void CheckConnection() {   // check every 11s if connected to Blynk server
                 //Serial.println("Da ket noi Blynk server");
         }
 }
-// Lấy ngày và giờ
-// void clockDisplay()
-// {
-//         // You can call hour(), minute(), ... at any time
-//         // Please see Time library examples for details
-//
-//         //  String currentTime = String(hour()) + ":" + minute() + ":" + second();
-//         //  String currentDate = String(day()) + " " + month() + " " + year();
-//         sprintf(currentTime, "%02d:%02d:%02d", hour(), minute(), second());
-//         sprintf(currentDate, "%02d/%02d/%04d", month(), day(), year());
-//         //Serial.print("Current time: ");
-//         //Serial.print(currentTime);
-//         //Serial.print(" ");
-//         //Serial.print(currentDate);
-//         Serial.println();
-//
-//         // Send time to the App
-//         Blynk.virtualWrite(V12, currentTime);
-//         // Send date to the App
-//         // Blynk.virtualWrite(V13, currentDate);
-//
-//
-// }
+
 // Hiển thị đồng hồ thời gian thực
 BLYNK_WRITE(V11) {   // Scheduler #1 Time Input widget
         TimeInputParam t(param);
-        nowseconds = ((hour() * 3600) + (minute() * 60) + second());
-        startseconds = (t.getStartHour() * 3600) + (t.getStartMinute() * 60);
-        stopseconds = (t.getStopHour() * 3600) + (t.getStopMinute() * 60);
+        startseconds =long (t.getStartHour() * 3600L) +long (t.getStartMinute() * 60L);
+        stopseconds =long (t.getStopHour() * 3600L) +long (t.getStopMinute() * 60L);
         // Blynk.virtualWrite(V14, startseconds," - ", stopseconds);
         Serial.println("Thực hiện Time Input 1 ");
 }
 // Scheduler #2 Time Input widget
 BLYNK_WRITE(V21) {   // Scheduler #2 Time Input widget
         TimeInputParam t2(param);
-        // nowseconds_2 = ((hour() * 3600) + (minute() * 60) + second());
-        startseconds_2 = (t2.getStartHour() * 3600) + (t2.getStartMinute() * 60);
-        stopseconds_2 = (t2.getStopHour() * 3600) + (t2.getStopMinute() * 60);
+        startseconds_2 = long(t2.getStartHour() * 3600L) + long(t2.getStartMinute() * 60L);
+        stopseconds_2 = long(t2.getStopHour() * 3600L) + long(t2.getStopMinute() * 60L);
         // Blynk.virtualWrite(V14, startseconds," - ", stopseconds);
         Serial.println("Thực hiện Time Input 2");
 }
@@ -226,7 +202,7 @@ void activetoday(){         // check if schedule #1 or #2 should run today
 //                Blynk.syncVirtual(V0); // sync scheduler #1
 //                //Blynk.syncVirtual(V2); // sync scheduler #2
 //        }
-        nowseconds = ((hour() * 3600) + (minute() * 60) + second());
+        nowseconds = long(hour() * 3600L) + long(minute() * 60L) + long(second());
         //Serial.print("nowseconds: ");
         Serial.println(nowseconds);
         //Serial.print("startseconds: ");
@@ -240,7 +216,7 @@ void activetoday(){         // check if schedule #1 or #2 should run today
         //Serial.print("stopseconds_2: ");
         Serial.println(stopseconds_2);
         // Điều kiện cho Timer 1
-        if(nowseconds >= startseconds - 30 && nowseconds <= startseconds + 30 && Bit_Timer == TRUE) {                   // 62s on 60s timer ensures 1 trigger command is sent
+        if(nowseconds >= startseconds - 30L && nowseconds <= startseconds + 30L && Bit_Timer == TRUE) {                   // 62s on 60s timer ensures 1 trigger command is sent
                 digitalWrite(UP_PIN, 255);         // turn on virtual LED
                 // digitalWrite(LED_BLINK, 255);
                 delay(300);
@@ -250,7 +226,7 @@ void activetoday(){         // check if schedule #1 or #2 should run today
                 Serial.println("Schedule 1 started");
                 //digitalWrite(15, 1);
         }
-        if(nowseconds >= stopseconds - 30 && nowseconds <= stopseconds + 30 && Bit_Timer == TRUE ) {         // 62s on 60s timer ensures 1 trigger command is sent
+        if(nowseconds >= stopseconds - 30L && nowseconds <= stopseconds + 30L && Bit_Timer == TRUE ) {         // 62s on 60s timer ensures 1 trigger command is sent
                 digitalWrite(DOWN_PIN, 255);         // turn OFF virtual LED
                 delay(300);
                 digitalWrite(DOWN_PIN, 0);
@@ -259,7 +235,7 @@ void activetoday(){         // check if schedule #1 or #2 should run today
                 //digitalWrite(15, 0);
         }
         //Điều kiện cho Timer 2
-        if(nowseconds >= startseconds_2 - 30 && nowseconds <= startseconds_2 + 30 && Bit_Timer_2 == TRUE) {           // 62s on 60s timer ensures 1 trigger command is sent
+        if(nowseconds >= startseconds_2 - 30L && nowseconds <= startseconds_2 + 30L && Bit_Timer_2 == TRUE) {           // 62s on 60s timer ensures 1 trigger command is sent
                 digitalWrite(RELAY_4, 255); // turn on virtual LED
                 delay(300);
                 digitalWrite(RELAY_4, 0);
@@ -267,7 +243,7 @@ void activetoday(){         // check if schedule #1 or #2 should run today
                 Serial.println("Schedule 2 started");
                 //digitalWrite(15, 1);
         }
-        if(nowseconds >= stopseconds_2 - 30 && nowseconds <= stopseconds_2 + 30 && Bit_Timer_2 == TRUE ) { // 62s on 60s timer ensures 1 trigger command is sent
+        if(nowseconds >= stopseconds_2 - 30L && nowseconds <= stopseconds_2 + 30L && Bit_Timer_2 == TRUE ) { // 62s on 60s timer ensures 1 trigger command is sent
                 digitalWrite(STOP_PIN, 255); // turn OFF virtual LED
                 delay(300);
                 digitalWrite(STOP_PIN, 0);

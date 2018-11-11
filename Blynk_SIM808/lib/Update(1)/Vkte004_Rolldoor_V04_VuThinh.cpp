@@ -59,7 +59,7 @@ TinyGsm modem(SerialAT);
 BLYNK_WRITE(V0) //Send data from app to hardware, hàm chỉ được gọi khi ta bấm nút V0 mà thôi
 {
         int pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
-        //Serial.println(pinValue);
+        ////Serial.println(pinValue);
         if (Bit_lock == 0) {
                 digitalWrite(STOP_PIN, pinValue);
                 digitalWrite(LED_BLINK, pinValue);
@@ -71,7 +71,7 @@ BLYNK_WRITE(V0) //Send data from app to hardware, hàm chỉ được gọi khi 
 BLYNK_WRITE(V1) //Send data from app to hardware
 {
         int pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
-        //Serial.println(pinValue);
+        ////Serial.println(pinValue);
         if (Bit_lock == 0) {
                 digitalWrite(UP_PIN, pinValue);
                 digitalWrite(LED_BLINK, pinValue);
@@ -83,7 +83,7 @@ BLYNK_WRITE(V1) //Send data from app to hardware
 BLYNK_WRITE(V2) //Send data from app to hardware
 {
         int pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
-        //Serial.println(pinValue);
+        ////Serial.println(pinValue);
         if (Bit_lock == 0) {
                 digitalWrite(DOWN_PIN, pinValue);
                 digitalWrite(LED_BLINK, pinValue);
@@ -95,20 +95,20 @@ BLYNK_WRITE(V2) //Send data from app to hardware
 BLYNK_WRITE(V3) //Send data from app to hardware
 {
         bool pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
-        //Serial.println(pinValue);
+        ////Serial.println(pinValue);
         if (pinValue && Bit_lock==TRUE) {
                 Bit_lock = FALSE; // đổi trạng thái
                 Blynk.virtualWrite(V10, "Không khóa");
                 //digitalWrite(STOP_PIN, 0);
                 //Serial.print("Bit lock:");
-                //Serial.println(Bit_lock);
+                ////Serial.println(Bit_lock);
         } else if (pinValue && Bit_lock==FALSE) {
                 Bit_lock = TRUE;
                 Blynk.virtualWrite(V10, "Khóa");
                 digitalWrite(LED_BLINK, 1);
                 //digitalWrite(STOP_PIN, 1);
                 //Serial.print("Bit lock:");
-                //Serial.println(Bit_lock);
+                ////Serial.println(Bit_lock);
         }
 
 
@@ -118,7 +118,7 @@ BLYNK_WRITE(V3) //Send data from app to hardware
 }
 void CheckConnection() {   // check every 11s if connected to Blynk server
         if (!Blynk.connected()) {
-                //Serial.println("Khong ket noi toi Blynk server");
+                ////Serial.println("Khong ket noi toi Blynk server");
                 //Blynk.connectNetwork(apn, user, pass); // try to connect to server with default timeout
                 //Blynk.connect(10000);
                 //software_Reset();
@@ -127,7 +127,7 @@ void CheckConnection() {   // check every 11s if connected to Blynk server
                 // connectNetwork(apn, user, pass);
         }
         else {
-                //Serial.println("Da ket noi Blynk server");
+                ////Serial.println("Da ket noi Blynk server");
         }
 }
 
@@ -158,7 +158,7 @@ void setup()
 
         // Restart takes quite some time
         // To skip it, call init() instead of restart()
-        //Serial.println("Khoi dong modem...");
+        ////Serial.println("Khoi dong modem...");
         //delay(3000);
         //software_Reset();
         modem.restart();
@@ -174,7 +174,7 @@ void setup()
         //Blynk.begin(auth, modem, apn, user, pass);
         timer.setInterval(180000L, CheckConnection);
         //Blynk.virtualWrite(V10, "Không khóa");
-        Serial.println("OUT SETUP...");
+        //Serial.println("OUT SETUP...");
 }
 
 void loop()
@@ -184,7 +184,7 @@ void loop()
         }
         else
         {
-                Serial.println("OUT LOOO.....P!!!!!");
+                //Serial.println("OUT LOOO.....P!!!!!");
                 // Code for A_CHANNEL
                 int a_rf = digitalRead(A_CHANNEL);
                 if (Bit_lock == 0) {
@@ -282,22 +282,6 @@ void loop()
         else {
                 digitalWrite(DOWN_PIN, FALSE);
         }
-// Code for D_CHANNEL
-        // int d_rf = digitalRead(D_CHANNEL);
-        // if (d_rf && Bit_lock == TRUE) {
-        //         Bit_lock = FALSE; // đổi trạng thái
-        //         Blynk.virtualWrite(V10, "Không khóa");
-        //         digitalWrite(STOP_PIN, 0);
-        //         ////Serial.print("Bit lock:");
-        //         //  //Serial.println(Bit_lock);
-        // } else if (d_rf == TRUE && Bit_lock == FALSE) {
-        //         Bit_lock = TRUE;
-        //         Blynk.virtualWrite(V10, "Khóa");
-        //         digitalWrite(LED_BLINK, 1);
-        //         digitalWrite(STOP_PIN, 1);
-        //         //Serial.print("Bit lock:");
-        //         //Serial.println(Bit_lock);
-        // }
 
 
         // Code for HAND_STOP
@@ -306,7 +290,7 @@ void loop()
                 digitalWrite(STOP_PIN, h_stop);
                 digitalWrite(LED_BLINK, h_stop);
                 delay(120);
-                Serial.println(h_stop);
+                //Serial.println(h_stop);
 
         }
         else {
@@ -318,7 +302,7 @@ void loop()
                 digitalWrite(UP_PIN, h_up);
                 digitalWrite(LED_BLINK, h_up);
                 delay(120);
-                Serial.println(h_up);
+                //Serial.println(h_up);
 
         }
         else {
@@ -330,7 +314,7 @@ void loop()
                 digitalWrite(DOWN_PIN, h_down);
                 digitalWrite(LED_BLINK, h_down);
                 delay(120);
-                Serial.println(h_down);
+                //Serial.println(h_down);
 
         }
         else {

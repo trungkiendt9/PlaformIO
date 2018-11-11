@@ -1,5 +1,5 @@
 
-#define BLYNK_PRINT Serial
+// #define BLYNK_PRINT Serial
 
 // Select your modem:
 #define TINY_GSM_MODEM_SIM800
@@ -21,7 +21,7 @@ void software_Reset();
 
 // You should get Auth Token in the Blynk App.
 // Go to the Project Settings (nut icon).
-char auth[] = "0f1aedf871ae41949efd9a81d93e03e3"; //vkte16_2
+char auth[] = "c718e21b1f5f4057b196b5e0ef485d53"; //vkte14 - 6 kênh - ông đào
 char server[]          = "blynk-cloud.com";
 unsigned int port      = 8442;
 // Your GPRS credentials
@@ -37,17 +37,17 @@ char currentTime[9];
 char currentDate[11];
 // long startTimeInSecs;
 // long stopTimeInSecs;
-uint32_t nowseconds;
-uint32_t startseconds;
-uint32_t stopseconds;
-// uint32_t nowseconds_2;
-uint32_t startseconds_2;
-uint32_t stopseconds_2;
+long nowseconds;
+long startseconds;
+long stopseconds;
+// long nowseconds_2;
+long startseconds_2;
+long stopseconds_2;
 // Hardware Serial on Mega, Leonardo, Micro
 // #define SerialAT Serial1
 // Chân chức năng trên arduino
-#define STOP_PIN 6      // Relay số 3 -
-#define UP_PIN 7        // Relay số 2 - V
+#define STOP_PIN 6      // Relay số 3
+#define UP_PIN 7        // Relay số 2
 #define DOWN_PIN  8     // Relay số 1
 #define RELAY_4  3     // Relay số 4
 #define RELAY_5  A5     // Relay số 5
@@ -73,40 +73,39 @@ BLYNK_CONNECTED() {
         Blynk.notify("Đồng bộ hóa");
 }
 // Hàm đọc giá trị Virtual PIN V0 viết giá trị lên LED_BLINK
-// BLYNK_WRITE(V17) //Send data from app to hardware, hàm chỉ được gọi khi ta bấm nút V0 mà thôi
-// {
-//         int pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
-//         //Serial.println(pinValue);
-//
-//         digitalWrite(STOP_PIN, pinValue);
-//         digitalWrite(LED_BLINK, pinValue);
-//         delay(300);
-//         if (pinValue == TRUE) {
-//                 Blynk.notify("Bật thiết bị 9!");
-//         } else {
-//                 Blynk.notify("Tắt thiết bị 9!");
-//         }
-//
-//
-//         // process received value
-// }
-BLYNK_WRITE(V16) //Send data from app to hardware
+BLYNK_WRITE(V0) //Send data from app to hardware, hàm chỉ được gọi khi ta bấm nút V0 mà thôi
+{
+        int pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
+        //Serial.println(pinValue);
+
+        digitalWrite(STOP_PIN, pinValue);
+        digitalWrite(LED_BLINK, pinValue);
+        delay(300);
+        if (pinValue == TRUE) {
+                Blynk.notify("Tắt sục 2!");
+        } else {
+                // Blynk.notify("Tắt thiết bị 3!");
+        }
+
+
+        // process received value
+}
+BLYNK_WRITE(V1) //Send data from app to hardware
 {
         int pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
         //Serial.println(pinValue);
         digitalWrite(UP_PIN, pinValue);
         digitalWrite(LED_BLINK, pinValue);
-        digitalWrite(LED_BLINK, pinValue);
         delay(300);
         if (pinValue == TRUE) {
-                Blynk.notify("Bật thiết bị 8!");
+                Blynk.notify("Bật sục 1!");
         } else {
-                Blynk.notify("Tắt thiết bị 8!");
+                // Blynk.notify("Tắt thiết bị 2!");
         }
         // process received value
 
 }
-BLYNK_WRITE(V15) //Send data from app to hardware
+BLYNK_WRITE(V2) //Send data from app to hardware
 {
         int pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
         //Serial.println(pinValue);
@@ -114,12 +113,12 @@ BLYNK_WRITE(V15) //Send data from app to hardware
         digitalWrite(LED_BLINK, pinValue);
         delay(300);
         if (pinValue == TRUE) {
-                Blynk.notify("Bật thiết bị 7!");
+                Blynk.notify("Tắt sục 1!");
         } else {
-                Blynk.notify("Tắt thiết bị 7!");
+                // Blynk.notify("Tắt thiết bị 1!");
         }
 }
-BLYNK_WRITE(V18) //Send data from app to hardware
+BLYNK_WRITE(V28) //Send data from app to hardware
 {
         int pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
         //Serial.println(pinValue);
@@ -127,12 +126,12 @@ BLYNK_WRITE(V18) //Send data from app to hardware
         digitalWrite(LED_BLINK, pinValue);
         delay(300);
         if (pinValue == TRUE) {
-                Blynk.notify("Bật thiết bị 9!");
+                Blynk.notify("Bật sục 2!");
         } else {
-                Blynk.notify("Tắt thiết bị 9!");
+                // Blynk.notify("Tắt thiết bị 4!");
         }
 }
-BLYNK_WRITE(V19) //Send data from app to hardware
+BLYNK_WRITE(V29) //Send data from app to hardware
 {
         int pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
         //Serial.println(pinValue);
@@ -140,12 +139,12 @@ BLYNK_WRITE(V19) //Send data from app to hardware
         digitalWrite(LED_BLINK, pinValue);
         delay(300);
         if (pinValue == TRUE) {
-                Blynk.notify("Bật thiết bị 10!");
+                Blynk.notify("Bật thiết bị 5!");
         } else {
-                Blynk.notify("Tắt thiết bị 10!");
+                Blynk.notify("Tắt thiết bị 5!");
         }
 }
-BLYNK_WRITE(V20) //Send data from app to hardware
+BLYNK_WRITE(V30) //Send data from app to hardware
 {
         int pinValue = param.asInt(); // assigning incoming value from pin V1 to a variable
         //Serial.println(pinValue);
@@ -153,17 +152,17 @@ BLYNK_WRITE(V20) //Send data from app to hardware
         digitalWrite(LED_BLINK, pinValue);
         delay(300);
         if (pinValue == TRUE) {
-                Blynk.notify("Bật thiết bị 11!");
+                Blynk.notify("Bật thiết bị 6!");
         } else {
-                Blynk.notify("Tắt thiết bị 11!");
+                Blynk.notify("Tắt thiết bị 6!");
         }
 }
-BLYNK_WRITE(V23) //Bit_Timer
+BLYNK_WRITE(V4) //Bit_Timer 1
 {
         bool pinValue = param.asInt(); // assigning incoming value from pin V4 to a variable
         Bit_Timer = pinValue;         // đổi trạng thái
 }
-BLYNK_WRITE(V25) //Bit_Timer_2
+BLYNK_WRITE(V14) //Bit_Timer_2
 {
         bool pinValue = param.asInt(); // assigning incoming value from pin V14 to a variable
         Bit_Timer_2 = pinValue;         // đổi trạng thái
@@ -180,46 +179,22 @@ void CheckConnection() {   // check every 11s if connected to Blynk server
                 //Serial.println("Da ket noi Blynk server");
         }
 }
-// Lấy ngày và giờ
-// void clockDisplay()
-// {
-//         // You can call hour(), minute(), ... at any time
-//         // Please see Time library examples for details
-//
-//         //  String currentTime = String(hour()) + ":" + minute() + ":" + second();
-//         //  String currentDate = String(day()) + " " + month() + " " + year();
-//         sprintf(currentTime, "%02d:%02d:%02d", hour(), minute(), second());
-//         sprintf(currentDate, "%02d/%02d/%04d", month(), day(), year());
-//         //Serial.print("Current time: ");
-//         //Serial.print(currentTime);
-//         //Serial.print(" ");
-//         //Serial.print(currentDate);
-//         Serial.println();
-//
-//         // Send time to the App
-//         Blynk.virtualWrite(V12, currentTime);
-//         // Send date to the App
-//         // Blynk.virtualWrite(V13, currentDate);
-//
-//
-// }
+
 // Hiển thị đồng hồ thời gian thực
-BLYNK_WRITE(V22) {   // Scheduler #1 Time Input widget
+BLYNK_WRITE(V11) {   // Scheduler #1 Time Input widget
         TimeInputParam t(param);
-        nowseconds = ((hour() * 3600) + (minute() * 60) + second());
-        startseconds = (t.getStartHour() * 3600) + (t.getStartMinute() * 60);
-        stopseconds = (t.getStopHour() * 3600) + (t.getStopMinute() * 60);
+        startseconds =long (t.getStartHour() * 3600L) +long (t.getStartMinute() * 60L);
+        stopseconds =long (t.getStopHour() * 3600L) +long (t.getStopMinute() * 60L);
         // Blynk.virtualWrite(V14, startseconds," - ", stopseconds);
-        Serial.println("Thực hiện Time Input 3 ");
+    //    Serial.println("Thực hiện Time Input 1 ");
 }
-// // Scheduler #2 Time Input widget
-BLYNK_WRITE(V24) {   // Scheduler #2 Time Input widget
+// Scheduler #2 Time Input widget
+BLYNK_WRITE(V21) {   // Scheduler #2 Time Input widget
         TimeInputParam t2(param);
-        // nowseconds_2 = ((hour() * 3600) + (minute() * 60) + second());
-        startseconds_2 = (t2.getStartHour() * 3600) + (t2.getStartMinute() * 60);
-        stopseconds_2 = (t2.getStopHour() * 3600) + (t2.getStopMinute() * 60);
+        startseconds_2 = long(t2.getStartHour() * 3600L) + long(t2.getStartMinute() * 60L);
+        stopseconds_2 = long(t2.getStopHour() * 3600L) + long(t2.getStopMinute() * 60L);
         // Blynk.virtualWrite(V14, startseconds," - ", stopseconds);
-        Serial.println("Thực hiện Time Input 4");
+    //    Serial.println("Thực hiện Time Input 2");
 }
 // Lập trình cho Timer 1
 void activetoday(){         // check if schedule #1 or #2 should run today
@@ -227,51 +202,53 @@ void activetoday(){         // check if schedule #1 or #2 should run today
 //                Blynk.syncVirtual(V0); // sync scheduler #1
 //                //Blynk.syncVirtual(V2); // sync scheduler #2
 //        }
-        nowseconds = ((hour() * 3600) + (minute() * 60) + second());
+        nowseconds = long(hour() * 3600L) + long(minute() * 60L) + long(second());
         //Serial.print("nowseconds: ");
-        Serial.println(nowseconds);
+    //    Serial.println(nowseconds);
         //Serial.print("startseconds: ");
-        Serial.println(startseconds);
+    //    Serial.println(startseconds);
         //Serial.print("stopseconds: ");
-        Serial.println(stopseconds);
+    //    Serial.println(stopseconds);
         // //Serial.print("nowseconds_2: ");
         // Serial.println(nowseconds_2);
         //Serial.print("startseconds_2: ");
-        // Serial.println(startseconds_2);
+    //    Serial.println(startseconds_2);
         //Serial.print("stopseconds_2: ");
-        // Serial.println(stopseconds_2);
+    //    Serial.println(stopseconds_2);
         // Điều kiện cho Timer 1
-        if(nowseconds >= startseconds - 30 && nowseconds <= startseconds + 30 && Bit_Timer == TRUE) {                   // 62s on 60s timer ensures 1 trigger command is sent
-                digitalWrite(DOWN_PIN, 255);         // turn on virtual LED
-                digitalWrite(LED_BLINK, 255);
+        if(nowseconds >= startseconds - 20L && nowseconds <= startseconds + 20L && Bit_Timer == TRUE) {                   // 62s on 60s timer ensures 1 trigger command is sent
+                digitalWrite(UP_PIN, 255);         // turn on virtual LED
+                // digitalWrite(LED_BLINK, 255);
                 delay(300);
-                Blynk.notify("Bật thiết bị 7!");
-                Serial.println("Schedule 1 started");
+                digitalWrite(UP_PIN, 0);         // turn on virtual LED
+                // digitalWrite(LED_BLINK, 0);
+                Blynk.notify("Bật sục 1!");
+            //    Serial.println("Schedule 1 started");
                 //digitalWrite(15, 1);
         }
-        if(nowseconds >= stopseconds - 30 && nowseconds <= stopseconds + 30 && Bit_Timer == TRUE ) {         // 62s on 60s timer ensures 1 trigger command is sent
-                digitalWrite(DOWN_PIN, 0);         // turn OFF virtual LED
+        if(nowseconds >= stopseconds - 20L && nowseconds <= stopseconds + 20L && Bit_Timer == TRUE ) {         // 62s on 60s timer ensures 1 trigger command is sent
+                digitalWrite(DOWN_PIN, 255);         // turn OFF virtual LED
                 delay(300);
-                digitalWrite(LED_BLINK, 0);
-                Blynk.notify("Tắt thiết bị 7!");
-                Serial.println("Schedule 1 finished");
+                digitalWrite(DOWN_PIN, 0);
+                Blynk.notify("Tắt sục 1!");
+            //    Serial.println("Schedule 1 finished");
                 //digitalWrite(15, 0);
         }
-        // //Điều kiện cho Timer 2
-        if(nowseconds >= startseconds_2 - 30 && nowseconds <= startseconds_2 + 30 && Bit_Timer_2 == TRUE) {           // 62s on 60s timer ensures 1 trigger command is sent
-                digitalWrite(UP_PIN, 255); // turn on virtual LED
-                digitalWrite(LED_BLINK, 255);
+        //Điều kiện cho Timer 2
+        if(nowseconds >= startseconds_2 - 20L && nowseconds <= startseconds_2 + 20L && Bit_Timer_2 == TRUE) {           // 62s on 60s timer ensures 1 trigger command is sent
+                digitalWrite(RELAY_4, 255); // turn on virtual LED
                 delay(300);
-                Blynk.notify("Bật thiết bị 8!");
-                Serial.println("Schedule 2 started");
+                digitalWrite(RELAY_4, 0);
+                Blynk.notify("Bật sục 2!");
+            //    Serial.println("Schedule 2 started");
                 //digitalWrite(15, 1);
         }
-        if(nowseconds >= stopseconds_2 - 30 && nowseconds <= stopseconds_2 + 30 && Bit_Timer_2 == TRUE ) { // 62s on 60s timer ensures 1 trigger command is sent
-                digitalWrite(UP_PIN, 0); // turn OFF virtual LED
+        if(nowseconds >= stopseconds_2 - 20L && nowseconds <= stopseconds_2 + 20L && Bit_Timer_2 == TRUE ) { // 62s on 60s timer ensures 1 trigger command is sent
+                digitalWrite(STOP_PIN, 255); // turn OFF virtual LED
                 delay(300);
-                digitalWrite(LED_BLINK, 0);
-                Blynk.notify("Tắt thiết bị 8!");
-                Serial.println("Schedule 2 finished");
+                digitalWrite(STOP_PIN, 0);
+                Blynk.notify("Tắt sục 2!");
+            //    Serial.println("Schedule 2 finished");
                 //digitalWrite(15, 0);
         }
 
@@ -318,9 +295,9 @@ void setup()
 
         Blynk.begin(auth, modem, apn, user, pass);
         rtc.begin();
-        timer.setInterval(60000L, CheckConnection);
+        timer.setInterval(5000L, CheckConnection);
         // timer.setInterval(3600000L, clockDisplay);
-        timer.setInterval(30000L, activetoday);
+        timer.setInterval(20000L, activetoday);
         //Blynk.virtualWrite(V10, "Không khóa");
 }
 

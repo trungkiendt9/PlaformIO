@@ -1,5 +1,5 @@
 // ThuNghiemTimer_GPRS(2) -- Thử rút gọn clean chương trình - OK
-// #define BLYNK_PRINT Serial
+#define BLYNK_PRINT Serial
 
 // Select your modem:
 #define TINY_GSM_MODEM_SIM800

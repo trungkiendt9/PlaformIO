@@ -1,4 +1,9 @@
 // ThuNghiemTimer_GPRS(2) -- Thử rút gọn clean chương trình - OK
+// Thu nghiem thêm Watchdog timer chống nhiễu làm đơ chip
+// Cần chạy boot loader của UNO. tức là coi NANO như UNO mới nạp đc IC
+// Khi đó mới chạy được Watchdog của NANO
+// Timer chạy liên tục trong khoảng thời gian cài đặt.
+// Bỏ được hàm CheckConnection()
 // #define BLYNK_PRINT Serial
 
 // Select your modem:
@@ -8,20 +13,36 @@
 //#define TINY_GSM_MODEM_A6
 
 //#define BLYNK_HEARTBEAT 30
-
+#include <avr/wdt.h>
 #include <SoftwareSerial.h>
 #include <TinyGsmClient.h>
 #include <BlynkSimpleSIM800.h>
 #include <TimeLib.h>
 #include <WidgetRTC.h>
 
+///Debug
+String timeString()
+{
+        char c[20];  // long enough to hold complete string
+        sprintf(c, "%02dh%02d:%02d",hour(),minute(),second());
+        String currentTime= String(c);
+        return currentTime;
+}
+
+String dateString()
+{
+        char c[20];  // long enough to hold complete string
+        sprintf(c, "%02d/%02d/%4d",day(),month(),year());
+        String currentDate= String(c);
+        return currentDate;
+}
+
 #define TRUE          1
 #define FALSE         0
 // You should get Auth Token in the Blynk App.
 // Go to the Project Settings (nut icon).
 // char auth[] = "5dace783f8664ac9b28b3b715d76afad"; // doanctmi
-// char auth[] = "f7af72bda29d494fbf24371d833089b7"; // doanctmi2
-char auth[] = "44afc371ad0047919587053c514d527c"; // vkte10(2)
+char auth[] = "f7af72bda29d494fbf24371d833089b7"; // doanctmi2
 // char server[]          = "blynk-cloud.com";
 // unsigned int port      = 8442;
 // Your GPRS credentials
@@ -30,13 +51,13 @@ char apn[]  = "v-internet";
 char user[] = "";
 char pass[] = "";
 // Khai báo các biến toàn cục #9A12B3 #F660AB
-// #define BLYNK_GREEN     "#23C48E"
-// #define BLYNK_BLUE      "#04C0F8"
-// #define BLYNK_YELLOW    "#ED9D00"
-// #define BLYNK_RED       "#FF5733"
-// #define BLYNK_DARK_BLUE "#5F7CD8"
-// #define BLYNK_CYAN      "#9A12B3"
-// #define BLYNK_PINK      "#F660AB"
+#define BLYNK_GREEN     "#23C48E"
+#define BLYNK_BLUE      "#04C0F8"
+#define BLYNK_YELLOW    "#ED9D00"
+#define BLYNK_RED       "#FF5733"
+#define BLYNK_DARK_BLUE "#5F7CD8"
+#define BLYNK_CYAN      "#9A12B3"
+#define BLYNK_PINK      "#F660AB"
 
 
 
@@ -121,7 +142,7 @@ uint32_t DeltaTimer(uint32_t startseconds, uint32_t stopseconds) {
 ///////////////Đồng bộ hóa/////////////////////////////////////
 BLYNK_CONNECTED() {
         if(FirstConnect == TRUE)
-                // Blynk.notify("Đồng bộ hóa");
+                Blynk.notify("Đồng bộ hóa");
         Blynk.syncAll();
         rtc.begin();
         FirstConnect = FALSE;
@@ -135,10 +156,10 @@ BLYNK_WRITE(V1) //Send data from app to hardware
         //Serial.println(pinValue);
         Set_Pin(DOWN_PIN, pinValue);
         if (pinValue == TRUE && FirstTrigger_1 == FALSE) {
-                Blynk.notify("Bật kênh 4!");
+                Blynk.notify("Bật kênh 1!");
                 FirstTrigger_1 = TRUE;
         } else if (pinValue == FALSE) {
-                Blynk.notify("Tắt kênh 4!");
+                Blynk.notify("Tắt kênh 1!");
                 FirstTrigger_1 = FALSE;
         }
 }
@@ -150,10 +171,10 @@ BLYNK_WRITE(V2) //Send data from app to hardware
         //Serial.println(pinValue);
         Set_Pin(UP_PIN, pinValue);
         if (pinValue == TRUE && FirstTrigger_2 == FALSE) {
-                Blynk.notify("Bật kênh 5!");
+                Blynk.notify("Bật kênh 2!");
                 FirstTrigger_2 = TRUE;
         } else if (pinValue == FALSE) {
-                Blynk.notify("Tắt kênh 5!");
+                Blynk.notify("Tắt kênh 2!");
                 FirstTrigger_2 = FALSE;
         }
 }
@@ -165,10 +186,10 @@ BLYNK_WRITE(V3) //Send data from app to hardware
         //Serial.println(pinValue);
         Set_Pin(STOP_PIN, pinValue);
         if (pinValue == TRUE && FirstTrigger_3 == FALSE) {
-                Blynk.notify("Bật kênh 6!");
+                Blynk.notify("Bật kênh 3!");
                 FirstTrigger_3 = TRUE;
         } else if (pinValue == FALSE) {
-                Blynk.notify("Tắt kênh 6!");
+                Blynk.notify("Tắt kênh 3!");
                 FirstTrigger_3 = FALSE;
         }
 }
@@ -180,10 +201,10 @@ BLYNK_WRITE(V4) //Send data from app to hardware
         //Serial.println(pinValue);
         Set_Pin(RELAY_4, pinValue);
         if (pinValue == TRUE && FirstTrigger_4 == FALSE) {
-                Blynk.notify("Bật kênh 7!");
+                Blynk.notify("Bật kênh 4!");
                 FirstTrigger_4 = TRUE;
         } else if (pinValue == FALSE) {
-                Blynk.notify("Tắt kênh 7!");
+                Blynk.notify("Tắt kênh 4!");
                 FirstTrigger_4 = FALSE;
         }
 }
@@ -195,10 +216,10 @@ BLYNK_WRITE(V5) //Send data from app to hardware
         //Serial.println(pinValue);
         Set_Pin(RELAY_5, pinValue);
         if (pinValue == TRUE && FirstTrigger_5 == FALSE) {
-                Blynk.notify("Bật kênh 8!");
+                Blynk.notify("Bật kênh 5!");
                 FirstTrigger_5 = TRUE;
         } else if (pinValue == FALSE) {
-                Blynk.notify("Tắt kênh 8!");
+                Blynk.notify("Tắt kênh 5!");
                 FirstTrigger_5 = FALSE;
         }
 }
@@ -210,10 +231,10 @@ BLYNK_WRITE(V6) //Send data from app to hardware
         //Serial.println(pinValue);
         Set_Pin(RELAY_6, pinValue);
         if (pinValue == TRUE && FirstTrigger_6 == FALSE) {
-                Blynk.notify("Bật kênh 9!");
+                Blynk.notify("Bật kênh 6!");
                 FirstTrigger_6 = TRUE;
         } else if (pinValue == FALSE) {
-                Blynk.notify("Tắt kênh 9!");
+                Blynk.notify("Tắt kênh 6!");
                 FirstTrigger_6 = FALSE;
         }
 }
@@ -295,7 +316,7 @@ BLYNK_WRITE(V14) {   // Scheduler #4 Time Input widget
 
 // Lập trình cho Timer 1
 void activetoday(){         // check if schedule #1 or #2 should run today
-
+        Serial.println(dateString()+" "+timeString()+" in activetoday(). ");
         nowseconds = ((hour() * 3600) + (minute() * 60) + second());
         // Serial.print("nowseconds: ");
         // Serial.println(nowseconds);
@@ -316,7 +337,7 @@ void activetoday(){         // check if schedule #1 or #2 should run today
                 Set_Pin(DOWN_PIN, 0);         // turn OFF virtual LED
                 Blynk.virtualWrite(V1, 0);
                 FirstTrigger_1 = FALSE;
-                Blynk.notify("Tắt kênh 4!");
+                Blynk.notify("Tắt kênh 1!");
                 //Serial.println("Schedule 1 finished######################");
         }
         // //Điều kiện cho Timer 2
@@ -330,7 +351,7 @@ void activetoday(){         // check if schedule #1 or #2 should run today
                 Set_Pin(UP_PIN, 0);         // turn OFF virtual LED
                 Blynk.virtualWrite(V2, 0);
                 FirstTrigger_2 = FALSE;
-                Blynk.notify("Tắt kênh 5!");
+                Blynk.notify("Tắt kênh 2!");
                 //Serial.println("Schedule 2 finished######################");
         }
         // //Điều kiện cho Timer 3
@@ -344,7 +365,7 @@ void activetoday(){         // check if schedule #1 or #2 should run today
                 Set_Pin(STOP_PIN, 0);         // turn OFF virtual LED
                 Blynk.virtualWrite(V3, 0);
                 FirstTrigger_3 = FALSE;
-                Blynk.notify("Tắt kênh 6!");
+                Blynk.notify("Tắt kênh 3!");
                 //Serial.println("Schedule 3 finished######################");
         }
         // //Điều kiện cho Timer 4
@@ -358,24 +379,28 @@ void activetoday(){         // check if schedule #1 or #2 should run today
                 Set_Pin(RELAY_4, 0);         // turn OFF virtual LED
                 Blynk.virtualWrite(V4, 0);
                 FirstTrigger_4 = FALSE;
-                Blynk.notify("Tắt kênh 7!");
+                Blynk.notify("Tắt kênh 4!");
                 //Serial.println("Schedule 4 finished######################");
         }
 }
-void CheckConnection() {   // check every 11s if connected to Blynk server
-        if (!Blynk.connected()) {
-                //Serial.println("Khong ket noi toi Blynk server");
-                //Blynk.connectNetwork(apn, user, pass); // try to connect to server with default timeout
-                //Blynk.connect(10000);
-                software_Reset();
-                // Blynk.begin(auth, modem, apn, user, pass);
-        }
-        else {
-                //Serial.println("Da ket noi Blynk server");
-        }
-}
+// void CheckConnection() {   // check every 11s if connected to Blynk server
+//         if (!Blynk.connected()) {
+//                 //Serial.println("Khong ket noi toi Blynk server");
+//                 //Blynk.connectNetwork(apn, user, pass); // try to connect to server with default timeout
+//                 //Blynk.connect(10000);
+//                 // software_Reset();
+//                 Blynk.begin(auth, modem, apn, user, pass);
+//                 wdt_reset();
+//         }
+//         else {
+//                 //Serial.println("Da ket noi Blynk server");
+//                 wdt_reset();
+//         }
+// }
 void setup()
 {
+        wdt_disable();
+        delay(3000);
         // Debug console
         pinMode(STOP_PIN, OUTPUT);
         pinMode(UP_PIN, OUTPUT);
@@ -412,14 +437,27 @@ void setup()
         // Blynk.config(modem, auth, server, port);
         // Blynk.connectNetwork(apn, user, pass);
         // Blynk.connect();
-
+        //Serial.println("Khởi động.........");
         Blynk.begin(auth, modem, apn, user, pass);
-        delay(3000);
+        delay(1000);
         rtc.begin();
-        timer.setInterval(5000L, CheckConnection);
-        // timer.setInterval(3600000L, clockDisplay);
+        delay(1000);
+        setSyncInterval(15*60); // 15 phut
+        Serial.println();
+        Serial.println(millis());
+        Blynk.run();            // Try to initialize RTC
+        Blynk.run();            // Try to initialize RTC
+        Blynk.run();            // Try to initialize RTC
+        Blynk.run();            // Try to initialize RTC
+        Blynk.run();            // Try to initialize RTC
+        Serial.println(millis());
+        Serial.println(dateString()+" "+timeString()+" in setup 1. ");
+        // timer.setInterval(20000L, CheckConnection);
+        wdt_enable(WDTO_8S);  // Chạy Watchdog 8s tối đa
+        delay(3000);
+        wdt_reset();
         timer.setInterval(10000L, activetoday);
-        //Blynk.virtualWrite(V10, "Không khóa");
+        //Serial.println("                      ......Done setup!");
 }
 
 
@@ -428,8 +466,8 @@ void loop()
 {
         if (Blynk.connected()) {
                 Blynk.run();
+                wdt_reset(); // thực hiện reset bộ đếm về 0 sau 8s.
         }
         timer.run();
-
-
+        // wdt_reset();
 }
