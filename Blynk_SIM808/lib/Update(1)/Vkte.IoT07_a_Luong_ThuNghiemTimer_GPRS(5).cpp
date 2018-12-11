@@ -115,7 +115,7 @@ void software_Reset() // Restarts program from beginning but does not reset the 
 // Chuyển trạng thái Relay và đèn Led
 void Set_Pin(uint8_t pinNumber, bool pinValue){
         digitalWrite(pinNumber, pinValue);
-        digitalWrite(LED_BLINK, pinValue);
+        // digitalWrite(LED_BLINK, pinValue);
 }
 // Tính delta_time cho mỗi Timer
 long DeltaTimer(long startseconds, long stopseconds) {
@@ -461,20 +461,3 @@ void loop()
         timer.run();
         // wdt_reset();
 }
-
-// ///Debug
-// String timeString()
-// {
-//         char c[20];  // long enough to hold complete string
-//         sprintf(c, "%02dh%02d:%02d",hour(),minute(),second());
-//         String currentTime= String(c);
-//         return currentTime;
-// }
-//
-// String dateString()
-// {
-//         char c[20];  // long enough to hold complete string
-//         sprintf(c, "%02d/%02d/%4d",day(),month(),year());
-//         String currentDate= String(c);
-//         return currentDate;
-// }

@@ -28,7 +28,7 @@
 // You should get Auth Token in the Blynk App.
 // Go to the Project Settings (nut icon).
 // char auth[] = "5dace783f8664ac9b28b3b715d76afad"; // doanctmi
-char auth[] = "d7434f046a2c4ab4ad68f0d5aaf1fdc2"; // vkte16_1
+char auth[] = "6998da94248a417c883930709c665703"; // vkteanhdao
 // char server[]          = "blynk-cloud.com";
 // unsigned int port      = 8442;
 // Your GPRS credentials
@@ -115,7 +115,7 @@ void software_Reset() // Restarts program from beginning but does not reset the 
 // Chuyển trạng thái Relay và đèn Led
 void Set_Pin(uint8_t pinNumber, bool pinValue){
         digitalWrite(pinNumber, pinValue);
-        digitalWrite(LED_BLINK, pinValue);
+        // digitalWrite(LED_BLINK, pinValue);
 }
 // Tính delta_time cho mỗi Timer
 long DeltaTimer(long startseconds, long stopseconds) {

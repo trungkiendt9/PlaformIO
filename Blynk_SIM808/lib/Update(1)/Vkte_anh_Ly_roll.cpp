@@ -20,7 +20,7 @@ void software_Reset();
 
 // You should get Auth Token in the Blynk App.
 // Go to the Project Settings (nut icon).
-char auth[] = "514ede1ee10e46a9a1edbb01b6447fe6";
+char auth[] = "df028d21eff342528c62843102de9830";
 char server[]          = "blynk-cloud.com";
 unsigned int port      = 8442;
 // Your GPRS credentials
@@ -37,14 +37,14 @@ bool Bit_lock = FALSE;
 #define UP_PIN 7
 #define DOWN_PIN  8
 #define LED_BLINK  13
-#define A_CHANNEL 3
-#define B_CHANNEL 5
-#define C_CHANNEL 2
-#define D_CHANNEL 4
+#define A_CHANNEL 5  //A
+#define B_CHANNEL 4  //B
+#define C_CHANNEL 2  //D
+#define D_CHANNEL 3  //C
 
-#define HAND_STOP A4
-#define HAND_UP A2
-#define HAND_DOWN 12
+// #define HAND_STOP A4
+// #define HAND_UP A2
+// #define HAND_DOWN 12
 
 
 BlynkTimer timer;
@@ -62,7 +62,7 @@ BLYNK_WRITE(V0) //Send data from app to hardware, hàm chỉ được gọi khi 
         ////Serial.println(pinValue);
         if (Bit_lock == 0) {
                 digitalWrite(STOP_PIN, pinValue);
-                digitalWrite(LED_BLINK, pinValue);
+                //digitalWrite(LED_BLINK, pinValue);
                 delay(300);
         }
 
@@ -74,7 +74,7 @@ BLYNK_WRITE(V1) //Send data from app to hardware
         ////Serial.println(pinValue);
         if (Bit_lock == 0) {
                 digitalWrite(UP_PIN, pinValue);
-                digitalWrite(LED_BLINK, pinValue);
+                //digitalWrite(LED_BLINK, pinValue);
                 delay(300);
         }
         // process received value
@@ -86,7 +86,7 @@ BLYNK_WRITE(V2) //Send data from app to hardware
         ////Serial.println(pinValue);
         if (Bit_lock == 0) {
                 digitalWrite(DOWN_PIN, pinValue);
-                digitalWrite(LED_BLINK, pinValue);
+                //digitalWrite(LED_BLINK, pinValue);
                 delay(300);
         }
 
@@ -105,7 +105,7 @@ BLYNK_WRITE(V3) //Send data from app to hardware
         } else if (pinValue && Bit_lock==FALSE) {
                 Bit_lock = TRUE;
                 Blynk.virtualWrite(V10, "Khóa");
-                digitalWrite(LED_BLINK, 1);
+                //digitalWrite(LED_BLINK, 1);
                 //digitalWrite(STOP_PIN, 1);
                 //Serial.print("Bit lock:");
                 ////Serial.println(Bit_lock);

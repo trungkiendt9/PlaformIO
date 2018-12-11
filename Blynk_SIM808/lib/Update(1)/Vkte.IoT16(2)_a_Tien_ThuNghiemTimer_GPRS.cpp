@@ -461,20 +461,3 @@ void loop()
         timer.run();
         // wdt_reset();
 }
-
-// ///Debug
-// String timeString()
-// {
-//         char c[20];  // long enough to hold complete string
-//         sprintf(c, "%02dh%02d:%02d",hour(),minute(),second());
-//         String currentTime= String(c);
-//         return currentTime;
-// }
-//
-// String dateString()
-// {
-//         char c[20];  // long enough to hold complete string
-//         sprintf(c, "%02d/%02d/%4d",day(),month(),year());
-//         String currentDate= String(c);
-//         return currentDate;
-// }
