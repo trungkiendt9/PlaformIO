@@ -16,7 +16,7 @@
 //#define TINY_GSM_MODEM_A6
 
 //#define BLYNK_HEARTBEAT 30
-#include <avr/wdt.h>
+// #include <avr/wdt.h>
 #include <SoftwareSerial.h>
 #include <TinyGsmClient.h>
 #include <BlynkSimpleSIM800.h>
@@ -57,7 +57,7 @@ bool Bit_Timer_2 = FALSE;
 bool Bit_Timer_3 = FALSE;
 bool Bit_Timer_4 = FALSE;
 
-bool Bit_E_STOP = FALSE;
+bool Bit_E_STOP = TRUE;
 bool Bit_DC1 = FALSE; //UP
 bool Bit_DC2 = FALSE; //Cấy mạ
 bool Bit_DC3 = FALSE; // Quay trái/phải
@@ -73,12 +73,12 @@ bool Bit_DC3 = FALSE; // Quay trái/phải
 // #define RELAY_4  3     // Relay số 4
 // #define RELAY_5  A5     // Relay số 5
 // #define RELAY_6  A4     // Relay số 6
-#define PWM_UP_PIN 5 // PWM UP
-#define PWM_DOWN_PIN 6 // PWM Cấy mạ
-#define PWM_TURN_PIN 11 // PWM Rẽ trái/phải
+#define PWM_UP_PIN 3 // PWM UP - dây trắng
+#define PWM_DOWN_PIN 6 // PWM Cấy mạ - dây đỏ
+#define PWM_TURN_PIN 11 // PWM Rẽ trái/phải - dây đen
 #define DIR_TURN_PIN 7 // Chân điều khiển rẽ trái/phải
 
-#define LED_BLINK  13
+//#define LED_BLINK  13
 // #define A_CHANNEL 3
 // #define B_CHANNEL 5
 // #define C_CHANNEL 2
@@ -112,7 +112,11 @@ BLYNK_WRITE(V0) //Nút dừng khẩn cấp
         Bit_E_STOP = pinValue;
         if(Bit_E_STOP == FALSE)
         {
-                Blynk.syncAll();
+                Blynk.syncVirtual(V2,V4,V6);
+                Blynk.virtualWrite(V1, 0);
+                Blynk.virtualWrite(V3, 0);
+                Blynk.virtualWrite(V5, 0);
+                Blynk.virtualWrite(V7, 0);
         }
 
 
@@ -130,7 +134,7 @@ BLYNK_WRITE(V2)
         int pinValue = param.asInt();
         if(Bit_DC1 == TRUE && Bit_E_STOP == TRUE)
         {
-                analogWrite(PWM_UP_PIN, pinValue);
+                analogWrite(PWM_UP_PIN, pinValue*255/100);
         }
         else
         {
@@ -149,7 +153,7 @@ BLYNK_WRITE(V4)
         int pinValue = param.asInt();
         if(Bit_DC2 == TRUE && Bit_E_STOP == TRUE)
         {
-                analogWrite(PWM_DOWN_PIN, pinValue);
+                analogWrite(PWM_DOWN_PIN, pinValue*255/100);
         }
         else
         {
@@ -160,19 +164,23 @@ BLYNK_WRITE(V4)
 BLYNK_WRITE(V5) // Nút chạy rẽ phải
 {
         bool pinValue = param.asInt();
-        digitalWrite(DIR_TURN_PIN, pinValue);
+        digitalWrite(DIR_TURN_PIN, FALSE);
+        Bit_DC3 = pinValue;
+        Blynk.syncVirtual(V6);
 }
 BLYNK_WRITE(V7) // Nút chạy rẽ trái
 {
         bool pinValue = param.asInt();
-        digitalWrite(DIR_TURN_PIN, pinValue);
+        digitalWrite(DIR_TURN_PIN, TRUE);
+        Bit_DC3 = pinValue;
+        Blynk.syncVirtual(V6);
 }
 BLYNK_WRITE(V6)
 {
         int pinValue = param.asInt();
-        if(Bit_DC2 == TRUE && Bit_E_STOP == TRUE)
+        if(Bit_DC3 == TRUE && Bit_E_STOP == TRUE)
         {
-                analogWrite(PWM_TURN_PIN, pinValue);
+                analogWrite(PWM_TURN_PIN, pinValue*255/100);
         }
         else
         {
@@ -195,13 +203,13 @@ void CheckConnection() {   // check every 11s if connected to Blynk server
         }
         else {
                 //Serial.println("Da ket noi Blynk server");
-                wdt_reset();
+                //wdt_reset();
         }
 }
 void setup()
 {
-        wdt_disable();
-        delay(1000);
+        //wdt_disable();
+      //  delay(1000);
         // Debug console
         // pinMode(STOP_PIN, OUTPUT);
         // pinMode(UP_PIN, OUTPUT);
@@ -210,11 +218,12 @@ void setup()
         // pinMode(RELAY_5, OUTPUT);
         // pinMode(RELAY_6, OUTPUT);
 
-        pinMode(LED_BLINK, OUTPUT);
+
         pinMode(PWM_UP_PIN, OUTPUT);  // Chân PWM 5
         pinMode(PWM_DOWN_PIN, OUTPUT);  // Chân PWM 6
         pinMode(PWM_TURN_PIN, OUTPUT);  // Chân PWM 11
-        pinMode(LED_BLINK, OUTPUT);  // Chân 13
+        pinMode(DIR_TURN_PIN, OUTPUT);
+        //pinMode(LED_BLINK, OUTPUT);  // Chân 13
 
         // pinMode(A_CHANNEL, INPUT);
         // pinMode(B_CHANNEL, INPUT);
@@ -246,9 +255,9 @@ void setup()
         Blynk.begin(auth, modem, apn, user, pass);
         delay(1000);
         // timer.setInterval(20000L, CheckConnection);
-        wdt_enable(WDTO_8S);  // Chạy Watchdog 8s tối đa
-        delay(2000);
-        wdt_reset();
+        //wdt_enable(WDTO_8S);  // Chạy Watchdog 8s tối đa
+        //delay(2000);
+        //wdt_reset();
         while (Blynk.connect() == false) {};
         rtc.begin();          // give RTC a second to sync up
         delay(1000);
@@ -264,7 +273,7 @@ void setup()
         // Serial.println(dateString()+" "+timeString()+" in setup 1. ");
         // timer.setInterval(10000L, activetoday);
         timer.setInterval(20000L, CheckConnection);
-        wdt_reset();
+        //wdt_reset();
         // Serial.println("                      ......Done setup!");
 }
 
@@ -274,8 +283,8 @@ void loop()
 {
         if (Blynk.connected()) {
                 Blynk.run();
-                wdt_reset(); // thực hiện reset bộ đếm về 0 sau 8s.
+                //wdt_reset(); // thực hiện reset bộ đếm về 0 sau 8s.
         }
         timer.run();
-        // wdt_reset();
+        // //wdt_reset();
 }
