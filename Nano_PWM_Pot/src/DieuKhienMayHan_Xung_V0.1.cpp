@@ -36,7 +36,7 @@ void setup(){
 // F_clock/1024=16mhz/1024=15625Hz
 //F_pwm=15625/65535=0,23 hz
 //F_pwm=15625/3900=4,0 hz
-//        Serial.begin(9600);
+       Serial.begin(9600);
 }
 void loop(){
         // ICR1 = 65535; // Tấn số bé nhất 0,238Hz
@@ -49,7 +49,7 @@ void loop(){
         uint16_t temp_pot_duty = analogRead(DUTY_PIN); //0-1023
         delayMicroseconds(150);
 
-// Code cho PWM FREQUENCY
+// Code cho PWM FREQUENCY và DUTY
         //pot_freq = map(temp_pot_freq, 0, 1023, 3000, 65535); // Hàm chuyển tỷ lệ nhanh
         pot_freq = map(temp_pot_freq, 0, 1023, 3000, 60000); // Hàm chuyển tỷ lệ nhanh
         uint16_t pot_freq_diff;
@@ -58,16 +58,30 @@ void loop(){
         } else {
           pot_freq_diff = pot_freq_previous - pot_freq;
         }
-//        Serial.println(pot_freq_diff);
-//        Serial.println(ICR1);
-        if (pot_freq_diff > 300) {
+
+        pot_duty = map (temp_pot_duty, 0, 1023, 1, 100);
+        uint16_t pot_duty_diff;
+        if (pot_duty > pot_duty_previous) {
+          pot_duty_diff = pot_duty - pot_duty_previous;
+        } else {
+          pot_duty_diff = pot_duty_previous - pot_duty;
+        }
+        //Serial.println(pot_freq_diff);
+        pot_duty_previous = pot_duty;
+        pot_freq_previous = pot_freq;
+        // Serial.println(pot_duty);
+        if (pot_freq_diff > 300 || pot_duty_diff > 2) {
+                pot_duty = (pot_freq/100)*pot_duty;
                 ICR1 = pot_freq;
-                OCR1A = ICR1/2;
-//                Serial.println(pot_freq);
-                pot_freq_previous = pot_freq;
+                OCR1A = pot_duty;
+                // Serial.println(pot_freq);
+                // Serial.println(pot_duty);
+                // Serial.println(pot_freq_diff);
+                // Serial.println(pot_duty_diff);
         }
         // delayMicroseconds(5000);
         delay(100);
-// Code cho PWM DUTY
+
+
 
 }
