@@ -59,7 +59,7 @@ void loop(){
           pot_freq_diff = pot_freq_previous - pot_freq;
         }
 
-        pot_duty = map (temp_pot_duty, 0, 1023, 5, 100);
+        pot_duty = map (temp_pot_duty, 0, 1023, 5, 95);
         uint16_t pot_duty_diff;
         if (pot_duty > pot_duty_previous) {
           pot_duty_diff = pot_duty - pot_duty_previous;
